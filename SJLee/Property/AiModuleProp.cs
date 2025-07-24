@@ -49,6 +49,7 @@ namespace SJLee
             MessageBox.Show("모델이 성공적으로 로드되었습니다.", "정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /*
         private void btnInspAI_Click(object sender, EventArgs e)
         {
             if (_saigeAI == null)
@@ -66,6 +67,28 @@ namespace SJLee
             Bitmap resultImage = _saigeAI.GetResultImage();
 
             Global.Inst.InspStage.UpdateDisplay(resultImage);
+        }
+        */
+        private void btnInspAI_Click(object sender, EventArgs e)
+        {
+            if (_saigeAI == null)
+            {
+                MessageBox.Show("AI 모듈이 초기화되지 않았습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Bitmap bitmap = Global.Inst.InspStage.GetCurrentImage();
+            if (bitmap == null)
+            {
+                MessageBox.Show("현재 이미지가 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            _saigeAI.InspIAD(bitmap);
+            Bitmap resultImage = _saigeAI.GetResultImage();
+
+            if (resultImage != null)
+                Global.Inst.InspStage.UpdateDisplay(resultImage);
         }
     }
 }
