@@ -43,7 +43,7 @@
             this.fileToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(800, 33);
+            this.mainMenu.Size = new System.Drawing.Size(800, 36);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "mainMenu";
             // 
@@ -59,7 +59,7 @@
             // imageOpenToolStripMenuItem
             // 
             this.imageOpenToolStripMenuItem.Name = "imageOpenToolStripMenuItem";
-            this.imageOpenToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.imageOpenToolStripMenuItem.Size = new System.Drawing.Size(216, 34);
             this.imageOpenToolStripMenuItem.Text = "Image Open";
             this.imageOpenToolStripMenuItem.Click += new System.EventHandler(this.imageOpenToolStripMenuItem_Click);
             // 
@@ -68,6 +68,7 @@
             this.imageSaveToolStripMenuItem.Name = "imageSaveToolStripMenuItem";
             this.imageSaveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.imageSaveToolStripMenuItem.Text = "Image Save";
+            this.imageSaveToolStripMenuItem.Click += new System.EventHandler(this.imageSaveToolStripMenuItem_Click);
             // 
             // MainForm
             // 

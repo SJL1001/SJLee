@@ -23,7 +23,51 @@ namespace SJLee
             if (File.Exists(filePath) == false)
                 return;
 
-            picMainview.Image = Image.FromFile(filePath);
+            Image bitmap = Image.FromFile(filePath);
+            imageViewCtrlMain.LoadBitmap((Bitmap)bitmap);
+            
+        }
+
+        /*
+        public void SaveImage(string filePath)
+        {
+            if (imageViewCtrlMain != null )
+            {
+                imageViewCtrlMain.Image.Save(filePath);
+            }
+            else
+            {
+                MessageBox.Show("이미지가 없습니다.", "error");
+            }
+        
+        }
+        */
+        
+
+        private void CameraForm_Resize(object sender, EventArgs e)
+        {
+            int margin = 0;
+            imageViewCtrlMain.Width = this.Width - margin * 2;
+            imageViewCtrlMain.Height = this.Height - margin * 2;
+
+            imageViewCtrlMain.Location = new System.Drawing.Point(margin, margin);
+        }
+
+        public void UpdateDisplay(Bitmap bitmap = null)
+        {
+            if (imageViewCtrlMain != null)
+                imageViewCtrlMain.LoadBitmap(bitmap);
+        }
+
+        public Bitmap GetDisplayImage()
+        {
+            Bitmap curImage = null;
+
+            if (imageViewCtrlMain != null)
+                curImage = imageViewCtrlMain.GetCurBitmap();
+
+            return curImage;
         }
     }
+
 }

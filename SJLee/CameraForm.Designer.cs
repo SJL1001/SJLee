@@ -28,46 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.imagePanel = new System.Windows.Forms.Panel();
-            this.picMainview = new System.Windows.Forms.PictureBox();
-            this.imagePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picMainview)).BeginInit();
+            this.imageViewCtrlMain = new SJLee.ImageViewCtrl();
             this.SuspendLayout();
             // 
-            // imagePanel
+            // imageViewCtrlMain
             // 
-            this.imagePanel.Controls.Add(this.picMainview);
-            this.imagePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imagePanel.Location = new System.Drawing.Point(0, 0);
-            this.imagePanel.Name = "imagePanel";
-            this.imagePanel.Size = new System.Drawing.Size(1205, 808);
-            this.imagePanel.TabIndex = 1;
-            // 
-            // picMainview
-            // 
-            this.picMainview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picMainview.Location = new System.Drawing.Point(0, 0);
-            this.picMainview.Name = "picMainview";
-            this.picMainview.Size = new System.Drawing.Size(1205, 808);
-            this.picMainview.TabIndex = 0;
-            this.picMainview.TabStop = false;
+            this.imageViewCtrlMain.Location = new System.Drawing.Point(13, 13);
+            this.imageViewCtrlMain.Name = "imageViewCtrlMain";
+            this.imageViewCtrlMain.Size = new System.Drawing.Size(1180, 783);
+            this.imageViewCtrlMain.TabIndex = 0;
             // 
             // CameraForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1205, 808);
-            this.Controls.Add(this.imagePanel);
+            this.Controls.Add(this.imageViewCtrlMain);
             this.Name = "CameraForm";
             this.Text = "CameraForm";
-            this.imagePanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picMainview)).EndInit();
+            this.Resize += new System.EventHandler(this.CameraForm_Resize);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Panel imagePanel;
-        private System.Windows.Forms.PictureBox picMainview;
+
+        private ImageViewCtrl imageViewCtrlMain;
     }
 }

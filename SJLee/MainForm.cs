@@ -52,7 +52,7 @@ namespace SJLee
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Title = "이미지 파일 선택";
+                openFileDialog.Title = "이미지 파일 선택";             
                 openFileDialog.Filter = "Image Files|*.bmp;*.jpg;*.jpeg;*.png;*.gif";
                 openFileDialog.Multiselect = false;
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -60,9 +60,29 @@ namespace SJLee
                     string filePath = openFileDialog.FileName;
                     cameraForm.LoadImage(filePath);
                 }
-            }
+            }            
            
+        }
 
+        
+        private void imageSaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CameraForm cameraForm = GetDockForm<CameraForm>();
+            if (cameraForm is null)
+                return;
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Title = "이미지 파일 저장";
+                saveFileDialog.Filter = "Image Files|*.bmp;*.jpg;*.jpeg;*.png;*.gif";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = saveFileDialog.FileName;
+                    
+                  // cameraForm.SaveImage(filePath);
+                }
+            }
+        
         }
     }
 }
