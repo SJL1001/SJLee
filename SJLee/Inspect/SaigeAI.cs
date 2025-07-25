@@ -1,4 +1,6 @@
 ﻿using SaigeVision.Net.V2;
+using SaigeVision.Net.V2.Classification;
+using SaigeVision.Net.V2.Detection;
 using SaigeVision.Net.V2.IAD;
 using System;
 using System.Collections.Generic;
@@ -14,15 +16,14 @@ namespace SJLee
 {
     internal class SaigeAI : IDisposable
     {
-        private enum EngineType 
-        {
-           
-        }
+        private enum EngineType { IAD, IAD_BATCH, SEG, SEG_BATCH, CLS, CLS_BATCH, DET, OCR, IEN }
         private Dictionary<string, IADResult> _IADResults;
+
 
         IADEngine _iADEngine = null;
         IADResult _iADresult = null;
         Bitmap _inspImage = null;
+       
 
         public SaigeAI()
         {
@@ -42,15 +43,20 @@ namespace SJLee
 
             option.CalcHeatmap = false;
 
-            option.CalcObjectAreaAndApplyThreshold
-                = true;
+            option.CalcMask = false;
 
-            option.CalcObjectAreaAndApplyThreshold = true;
+            option.CalcObject = true;
+
+            option.CalcObjectAreaAndApplyThreshold  = true;
+
+            option.CalcObjectScoreAndApplyThreshold = true;
 
             option.CalcTime = true;
 
             _iADEngine.SetInferenceOption(option);
 
+           
+            
         }
 
         public bool InspIAD(Bitmap bmpImage)
@@ -73,7 +79,8 @@ namespace SJLee
 
             return true;
         }
-
+       
+       
         private void DrawIADResult(IADResult result, Bitmap bmp)
         {
             Graphics g = Graphics.FromImage(bmp);
@@ -96,6 +103,7 @@ namespace SJLee
                 step += 50;
             }
         }
+       
 
         public Bitmap GetResultImage()
         {
@@ -123,6 +131,7 @@ namespace SJLee
                   
                     if (_iADEngine != null)
                         _iADEngine.Dispose();
+                   
                 }                           
                 disposed = true;
             }

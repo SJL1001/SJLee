@@ -49,7 +49,7 @@ namespace SJLee
             MessageBox.Show("모델이 성공적으로 로드되었습니다.", "정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        /*
+        
         private void btnInspAI_Click(object sender, EventArgs e)
         {
             if (_saigeAI == null)
@@ -68,7 +68,9 @@ namespace SJLee
 
             Global.Inst.InspStage.UpdateDisplay(resultImage);
         }
-        */
+        
+
+        /*
         private void btnInspAI_Click(object sender, EventArgs e)
         {
             if (_saigeAI == null)
@@ -89,6 +91,6 @@ namespace SJLee
 
             if (resultImage != null)
                 Global.Inst.InspStage.UpdateDisplay(resultImage);
-        }
+        }*/
     }
 }

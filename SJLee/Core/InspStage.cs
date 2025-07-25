@@ -37,7 +37,7 @@ namespace SJLee
             }
         }
 
-        /*
+        
         public Bitmap GetCurrentImage()
         {
             Bitmap bitmap = null;
@@ -49,20 +49,9 @@ namespace SJLee
 
             return bitmap;
         }
-        */
-        public Bitmap GetCurrentImage()
-        {
-            var cameraForm = MainForm.GetDockForm<CameraForm>();
-            if (cameraForm != null)
-            {
-                var image = cameraForm.GetDisplayImage();
-                if (image != null)
-                    return new Bitmap(image); // 복사본 리턴
-            }
+        
 
-            return null;
-        }
-
+     
 
         #region Disposable
         private bool disposed = false;
