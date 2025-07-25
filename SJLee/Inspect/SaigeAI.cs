@@ -16,8 +16,10 @@ namespace SJLee
 {
     internal class SaigeAI : IDisposable
     {
-        public enum EngineType { IAD, DET  }
+        public enum EngineType { IAD, DET, CLS }
         private Dictionary<string, IADResult> _IADResults;
+        private Dictionary<string, DetectionResult> _DETResults;
+        private Dictionary<string, ClassificationResult> _CLSResults;
         private EngineType _engineType;
 
         IADEngine _iADEngine = null;
@@ -31,7 +33,9 @@ namespace SJLee
 
         public SaigeAI()
         {
-           _IADResults = new Dictionary<string, IADResult>();
+            _IADResults = new Dictionary<string, IADResult>();
+            _DETResults = new Dictionary<string, DetectionResult>();
+            _CLSResults = new Dictionary<string, ClassificationResult>();
         }
 
         public void LoadEngine(string modelPath, EngineType type)
@@ -148,7 +152,7 @@ namespace SJLee
             foreach (var prediction in result.SegmentedObjects)
             {
                 SolidBrush brush = new SolidBrush(Color.FromArgb(127, prediction.ClassInfo.Color));
-                
+
                 using (GraphicsPath gp = new GraphicsPath())
                 {
                     if (prediction.Contour.Value.Count < 3) continue;
@@ -218,17 +222,17 @@ namespace SJLee
                     success = _dETresult != null;
                     break;
 
-                    /*
-                case EngineType.CLS:
-                    if (_cLSEngine == null)
-                    {
-                        Console.WriteLine("Classification 엔진이 초기화되지 않았습니다.");
-                        return false;
-                    }
-                    _cLSresult = _cLSEngine.Inspection(srImage);
-                    success = _cLSresult != null;
-                    break;
-                    */
+                /*
+            case EngineType.CLS:
+                if (_cLSEngine == null)
+                {
+                    Console.WriteLine("Classification 엔진이 초기화되지 않았습니다.");
+                    return false;
+                }
+                _cLSresult = _cLSEngine.Inspection(srImage);
+                success = _cLSresult != null;
+                break;
+                */
 
                 default:
                     Console.WriteLine("지원하지 않는 엔진 타입입니다.");
@@ -238,7 +242,7 @@ namespace SJLee
             sw.Stop();
             return success;
         }
-     
+
 
         public Bitmap GetResultImage()
         {
@@ -284,7 +288,7 @@ namespace SJLee
 
 
         #region Disposable
-        private bool disposed = false; 
+        private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -292,7 +296,7 @@ namespace SJLee
             {
                 if (disposing)
                 {
-                  
+
                     if (_iADEngine != null)
                         _iADEngine.Dispose();
                     if (_cLSEngine != null)
@@ -300,7 +304,7 @@ namespace SJLee
                     if (_dETEngine != null)
                         _dETEngine.Dispose();
 
-                }                           
+                }
                 disposed = true;
             }
         }
