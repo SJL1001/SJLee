@@ -54,6 +54,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalLib\Dll\OpenCv\OpenCvSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenCvSharp.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalLib\Dll\OpenCv\OpenCvSharp.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="SaigeVision.Net.Core.V2, Version=2.5.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalLib\Dll\Saige\SaigeVision.Net.Core.V2.dll</HintPath>
@@ -82,7 +90,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Util\BitmapExtension.cs" />
     <Compile Include="Core\Global.cs" />
+    <Compile Include="Core\ImageSpace.cs" />
     <Compile Include="ImageViewCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>

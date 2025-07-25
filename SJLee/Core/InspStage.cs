@@ -28,26 +28,26 @@ namespace SJLee
 
             return true;
         }
-        public void UpdateDisplay(Bitmap bitmap)
+        public void UpdateDisplay(Bitmap bitmapresult)
         {
             var cameraForm = MainForm.GetDockForm<CameraForm>();
             if (cameraForm != null)
             {
-                cameraForm.UpdateDisplay(bitmap);
+                cameraForm.UpdateDisplay(bitmapresult);
             }
         }
 
         
         public Bitmap GetCurrentImage()
         {
-            Bitmap bitmap = null;
+            Bitmap bitmapresult = null;
             var cameraForm = MainForm.GetDockForm<CameraForm>();
             if (cameraForm != null)
             {
-                bitmap = cameraForm.GetDisplayImage();
+                bitmapresult = cameraForm.GetDisplayImage();
             }
 
-            return bitmap;
+            return bitmapresult;
         }
         
 

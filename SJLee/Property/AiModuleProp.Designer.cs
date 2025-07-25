@@ -32,6 +32,7 @@
             this.btnLoadModel = new System.Windows.Forms.Button();
             this.btnSelAIModel = new System.Windows.Forms.Button();
             this.txtAIModelPath = new System.Windows.Forms.TextBox();
+            this.comboBoxAiModule = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnInspAI
@@ -71,8 +72,20 @@
             this.txtAIModelPath.Size = new System.Drawing.Size(359, 28);
             this.txtAIModelPath.TabIndex = 3;
             // 
+            // comboBoxAiModule
+            // 
+            this.comboBoxAiModule.FormattingEnabled = true;
+            this.comboBoxAiModule.Items.AddRange(new object[] {
+            "IAD",
+            "DET"});
+            this.comboBoxAiModule.Location = new System.Drawing.Point(24, 358);
+            this.comboBoxAiModule.Name = "comboBoxAiModule";
+            this.comboBoxAiModule.Size = new System.Drawing.Size(198, 26);
+            this.comboBoxAiModule.TabIndex = 4;
+            // 
             // AiModuleProp
             // 
+            this.Controls.Add(this.comboBoxAiModule);
             this.Controls.Add(this.txtAIModelPath);
             this.Controls.Add(this.btnSelAIModel);
             this.Controls.Add(this.btnLoadModel);
@@ -90,5 +103,6 @@
         private System.Windows.Forms.Button btnLoadModel;
         private System.Windows.Forms.Button btnSelAIModel;
         private System.Windows.Forms.TextBox txtAIModelPath;
+        private System.Windows.Forms.ComboBox comboBoxAiModule;
     }
 }

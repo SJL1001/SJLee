@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SJLee.SaigeAI;
 
 namespace SJLee
 {
@@ -17,6 +18,7 @@ namespace SJLee
         public AiModuleProp()
         {
             InitializeComponent();
+            comboBoxAiModule.DataSource = Enum.GetValues(typeof(EngineType));
         }
 
         private void btnSelAIModel_Click(object sender, EventArgs e)
@@ -45,8 +47,22 @@ namespace SJLee
             {
                 _saigeAI = Global.Inst.InspStage.AIModule;
             }
-            _saigeAI.LoadEngine(_modelPath);
-            MessageBox.Show("모델이 성공적으로 로드되었습니다.", "정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (comboBoxAiModule.SelectedItem is EngineType selectedType)
+            {
+                try
+                {
+                    _saigeAI.LoadEngine(_modelPath, selectedType);
+                    MessageBox.Show("모델이 성공적으로 로드되었습니다.", "정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"모델 로드 실패: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("엔진 타입을 선택해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         
@@ -58,11 +74,11 @@ namespace SJLee
                 return;
             }
 
-            Bitmap bitmap = Global.Inst.InspStage.GetCurrentImage();
+            Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
 
             //Bitmap bitmap = Global.Inst.InspStage.AIModule.GetTestImage(); // 테스트 이미지 가져오기
 
-            _saigeAI.InspIAD(bitmap);
+            _saigeAI.RunInspection(bitmapresult);
 
             Bitmap resultImage = _saigeAI.GetResultImage();
 
