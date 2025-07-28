@@ -74,7 +74,9 @@ namespace SJLee
                 
                 if (_bitmapImage.Width == bitmap.Width && _bitmapImage.Height == bitmap.Height)
                 {
-                    _bitmapImage = bitmap;
+                    _bitmapImage.Dispose();
+                    _bitmapImage = bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb); 
                     Invalidate();
                     return;
                 }
@@ -82,7 +84,8 @@ namespace SJLee
                 _bitmapImage = null;  
             }
 
-            _bitmapImage = bitmap;
+            _bitmapImage = bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
            
             if (_isInitialized == false)
@@ -92,6 +95,8 @@ namespace SJLee
             }
 
             FitImageToScreen();
+
+            Invalidate();
         }
             private void FitImageToScreen()
         {

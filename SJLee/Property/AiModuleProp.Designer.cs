@@ -37,7 +37,7 @@
             // 
             // btnInspAI
             // 
-            this.btnInspAI.Location = new System.Drawing.Point(70, 262);
+            this.btnInspAI.Location = new System.Drawing.Point(48, 262);
             this.btnInspAI.Name = "btnInspAI";
             this.btnInspAI.Size = new System.Drawing.Size(152, 40);
             this.btnInspAI.TabIndex = 0;
@@ -47,7 +47,7 @@
             // 
             // btnLoadModel
             // 
-            this.btnLoadModel.Location = new System.Drawing.Point(70, 178);
+            this.btnLoadModel.Location = new System.Drawing.Point(48, 179);
             this.btnLoadModel.Name = "btnLoadModel";
             this.btnLoadModel.Size = new System.Drawing.Size(152, 42);
             this.btnLoadModel.TabIndex = 1;
@@ -57,7 +57,7 @@
             // 
             // btnSelAIModel
             // 
-            this.btnSelAIModel.Location = new System.Drawing.Point(70, 115);
+            this.btnSelAIModel.Location = new System.Drawing.Point(48, 111);
             this.btnSelAIModel.Name = "btnSelAIModel";
             this.btnSelAIModel.Size = new System.Drawing.Size(152, 37);
             this.btnSelAIModel.TabIndex = 2;
@@ -67,20 +67,22 @@
             // 
             // txtAIModelPath
             // 
-            this.txtAIModelPath.Location = new System.Drawing.Point(24, 38);
+            this.txtAIModelPath.Location = new System.Drawing.Point(24, 28);
             this.txtAIModelPath.Name = "txtAIModelPath";
+            this.txtAIModelPath.ReadOnly = true;
             this.txtAIModelPath.Size = new System.Drawing.Size(359, 28);
             this.txtAIModelPath.TabIndex = 3;
             // 
             // comboBoxAiModule
             // 
+            this.comboBoxAiModule.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxAiModule.FormattingEnabled = true;
             this.comboBoxAiModule.Items.AddRange(new object[] {
             "IAD",
             "DET"});
-            this.comboBoxAiModule.Location = new System.Drawing.Point(24, 358);
+            this.comboBoxAiModule.Location = new System.Drawing.Point(24, 351);
             this.comboBoxAiModule.Name = "comboBoxAiModule";
-            this.comboBoxAiModule.Size = new System.Drawing.Size(198, 26);
+            this.comboBoxAiModule.Size = new System.Drawing.Size(176, 26);
             this.comboBoxAiModule.TabIndex = 4;
             // 
             // AiModuleProp

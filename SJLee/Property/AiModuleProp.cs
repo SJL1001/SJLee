@@ -20,7 +20,7 @@ namespace SJLee
             InitializeComponent();
             comboBoxAiModule.DataSource = Enum.GetValues(typeof(EngineType));
         }
-
+        /*
         private void btnSelAIModel_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -34,6 +34,47 @@ namespace SJLee
                     txtAIModelPath.Text = _modelPath;
                 }
             }
+        }
+        */
+        private void btnSelAIModel_Click(object sender, EventArgs e)
+        {
+            string filter = GetFilterBySelectedEngineType();
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "AI 모델 파일 선택";
+                openFileDialog.Filter = filter;
+                openFileDialog.Multiselect = false;
+                openFileDialog.InitialDirectory = @"C:\Saige\SaigeVision\engine\Examples\data\sfaw2023\models";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _modelPath = openFileDialog.FileName;
+                    txtAIModelPath.Text = _modelPath;
+                }
+            }
+        }
+
+        private string GetFilterBySelectedEngineType()
+        {
+            if (comboBoxAiModule.SelectedItem is EngineType selectedType)
+            {
+                switch (selectedType)
+                {
+                    case EngineType.CLS:
+                        return "Classification Models (*.saigecls)|*.saigecls";
+                    case EngineType.IAD:
+                        return "IAD Models (*.saigeiad)|*.saigeiad";
+                    case EngineType.DET:
+                        return "Detection Models (*.saigedet)|*.saigedet";
+                  case EngineType.SEG:
+                        return "Segmentation Models (*.saigeseg)|*.saigeseg";
+                    default:
+                        return "All Files (*.*)|*.*";
+                }
+            }
+
+            return "All Files (*.*)|*.*";
         }
 
         private void btnLoadModel_Click(object sender, EventArgs e)
@@ -74,11 +115,21 @@ namespace SJLee
                 return;
             }
 
-            Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
+            Bitmap originalImage = Global.Inst.InspStage.GetCurrentImage();
+            if (originalImage == null)
+                return;
 
-            //Bitmap bitmap = Global.Inst.InspStage.AIModule.GetTestImage(); // 테스트 이미지 가져오기
+            Bitmap inputForInspection = originalImage.Clone(
+                new Rectangle(0, 0, originalImage.Width, originalImage.Height),
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            _saigeAI.RunInspection(bitmapresult);
+
+
+            //Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
+
+
+
+            _saigeAI.RunInspection(inputForInspection);
 
             Bitmap resultImage = _saigeAI.GetResultImage();
 
