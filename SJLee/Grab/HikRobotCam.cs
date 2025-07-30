@@ -13,7 +13,7 @@ namespace SJLee
 {
     struct GrabUserBuffer
     {
-
+         
         private byte[] _imageBuffer;
 
         private IntPtr _imageBufferPtr;
