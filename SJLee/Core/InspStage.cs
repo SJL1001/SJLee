@@ -49,9 +49,30 @@ namespace SJLee
 
             return bitmapresult;
         }
-        
 
-     
+        private Bitmap _originalImage = null;
+
+        public void SetOriginalImage(Bitmap image)
+        {
+            _originalImage?.Dispose();
+            if (image != null)
+            {
+                _originalImage = image.Clone(
+                    new Rectangle(0, 0, image.Width, image.Height),
+                    System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            }
+        }
+
+        public Bitmap GetOriginalImage()
+        {
+            if (_originalImage == null)
+                return null;
+
+            return _originalImage.Clone(
+                new Rectangle(0, 0, _originalImage.Width, _originalImage.Height),
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+        }
+
 
         #region Disposable
         private bool disposed = false;

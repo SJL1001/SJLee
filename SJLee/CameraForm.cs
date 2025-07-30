@@ -25,7 +25,9 @@ namespace SJLee
 
             Image bitmap = Image.FromFile(filePath);
             imageViewCtrlMain.LoadBitmap((Bitmap)bitmap);
-            
+
+            Global.Inst.InspStage.SetOriginalImage((Bitmap)bitmap);
+
         }
 
         /*

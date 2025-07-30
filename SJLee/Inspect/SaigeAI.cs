@@ -27,6 +27,7 @@ namespace SJLee
 
         IADEngine _iadEngine = null;
         IADResult _iadResult = null;
+<<<<<<< HEAD
         Bitmap _inspImage = null;
         DetectionEngine _detEngine = null;
         DetectionResult _detResult = null;
@@ -34,6 +35,16 @@ namespace SJLee
         ClassificationResult _clsResult = null;
         SegmentationEngine _segEngine = null;
         SegmentationResult _segResult = null;
+=======
+       
+        DetectionEngine _detEngine = null;
+        DetectionResult _detResult = null;
+        ClassificationEngine _clsEngine = null;
+        ClassificationResult _clsResult = null;
+        SegmentationEngine _segEngine = null;
+        SegmentationResult _segResult = null;
+        Bitmap _inspImage = null;
+>>>>>>> 250730#1
 
 
         public SaigeAI()
@@ -41,12 +52,20 @@ namespace SJLee
             _iadResults = new Dictionary<string, IADResult>();
             _detResults = new Dictionary<string, DetectionResult>();
             _clsResults = new Dictionary<string, ClassificationResult>();
+<<<<<<< HEAD
+=======
+            _segResults = new Dictionary<string , SegmentationResult>();
+>>>>>>> 250730#1
         }
 
         public void LoadEngine(string modelPath, EngineType type)
         {
             _engineType = type;
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> 250730#1
             if (_iadEngine != null)
                 _iadEngine.Dispose();
             _iadEngine = null;
@@ -89,6 +108,7 @@ namespace SJLee
                     clsOpt.CalcClassActivationMap = true;
                     _clsEngine.SetInferenceOption(clsOpt);
                     break;
+<<<<<<< HEAD
 
                 case EngineType.SEG:
                     _segEngine = new SegmentationEngine(modelPath, 0);
@@ -106,6 +126,26 @@ namespace SJLee
 
         }
 
+=======
+
+                case EngineType.SEG:
+                    _segEngine = new SegmentationEngine(modelPath, 0);
+                    var segOpt = _segEngine.GetInferenceOption();
+                    segOpt.CalcTime = true;
+                    segOpt.CalcObject = true;
+                    segOpt.CalcScoremap = false;
+                    segOpt.CalcObjectAreaAndApplyThreshold = true;
+                    segOpt.CalcObjectScoreAndApplyThreshold = true;
+                    segOpt.OversizedImageHandling = OverSizeImageFlags.resize_to_fit;
+
+                    _segEngine.SetInferenceOption(segOpt);
+                    break;
+            }
+
+
+        }
+
+>>>>>>> 250730#1
         private void DrawIADResult(IADResult result, Bitmap bmp)
         {
             Graphics g = Graphics.FromImage(bmp);
@@ -133,11 +173,19 @@ namespace SJLee
             Graphics g = Graphics.FromImage(bmp);
             int step = 10;
 
+<<<<<<< HEAD
 
             foreach (var prediction in result.DetectedObjects)
             {
                 SolidBrush brush = new SolidBrush(Color.FromArgb(127, prediction.ClassInfo.Color));
 
+=======
+           
+            foreach (var prediction in result.DetectedObjects)
+            {
+                SolidBrush brush = new SolidBrush(Color.FromArgb(127, prediction.ClassInfo.Color));
+                
+>>>>>>> 250730#1
                 using (GraphicsPath gp = new GraphicsPath())
                 {
                     float x = (float)prediction.BoundingBox.X;
@@ -156,7 +204,11 @@ namespace SJLee
             Graphics g = Graphics.FromImage(bmp);
             int step = 10;
 
+<<<<<<< HEAD
 
+=======
+          
+>>>>>>> 250730#1
             foreach (var prediction in result.SegmentedObjects)
             {
                 SolidBrush brush = new SolidBrush(Color.FromArgb(127, prediction.ClassInfo.Color));
@@ -179,14 +231,22 @@ namespace SJLee
             if (bmpImage == null)
                 return false;
 
+<<<<<<< HEAD
             _inspImage = bmpImage.Clone(new Rectangle(0, 0, bmpImage.Width, bmpImage.Height), System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+=======
+>>>>>>> 250730#1
             _iadResult = null;
             _detResult = null;
             _clsResult = null;
             _segResult = null;
 
+<<<<<<< HEAD
            
             SrImage srImage = new SrImage(_inspImage);
+=======
+            _inspImage = (Bitmap)bmpImage.Clone();
+            SrImage srImage = new SrImage(bmpImage);
+>>>>>>> 250730#1
             Stopwatch sw = Stopwatch.StartNew();
 
             bool success = false;
@@ -211,6 +271,7 @@ namespace SJLee
                     }
                     _detResult = _detEngine.Inspection(srImage);
                     success = _detResult != null;
+<<<<<<< HEAD
                     break;
 
 
@@ -234,6 +295,31 @@ namespace SJLee
                     success = _segResult != null;
                     break;
 
+=======
+                    break;
+
+                
+            case EngineType.CLS:
+                if (_clsEngine == null)
+                {
+                    Console.WriteLine("Classification 엔진이 초기화되지 않았습니다.");
+                    return false;
+                }
+                _clsResult = _clsEngine.Inspection(srImage);
+                success = _clsResult != null;
+                break;
+
+                case EngineType.SEG:
+                    if(_segEngine == null)
+                    {
+                        Console.WriteLine("Segmentation 엔진이 초기화되지 않았습니다.");
+                        return false;
+                    }
+                    _segResult = _segEngine.Inspection(srImage);
+                    success = _segResult != null;
+                    break;
+
+>>>>>>> 250730#1
 
                 default:
                     Console.WriteLine("지원하지 않는 엔진 타입입니다.");
@@ -248,6 +334,10 @@ namespace SJLee
         public Bitmap GetResultImage()
         {
 
+<<<<<<< HEAD
+=======
+     
+>>>>>>> 250730#1
             if (_inspImage == null)
                 return null;
             Bitmap resultImage = _inspImage.Clone(

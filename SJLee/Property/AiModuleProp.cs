@@ -45,7 +45,6 @@ namespace SJLee
                 openFileDialog.Title = "AI 모델 파일 선택";
                 openFileDialog.Filter = filter;
                 openFileDialog.Multiselect = false;
-                openFileDialog.InitialDirectory = @"C:\Saige\SaigeVision\engine\Examples\data\sfaw2023\models";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -67,7 +66,7 @@ namespace SJLee
                         return "IAD Models (*.saigeiad)|*.saigeiad";
                     case EngineType.DET:
                         return "Detection Models (*.saigedet)|*.saigedet";
-                  case EngineType.SEG:
+                 case EngineType.SEG:
                         return "Segmentation Models (*.saigeseg)|*.saigeseg";
                     default:
                         return "All Files (*.*)|*.*";
@@ -114,22 +113,18 @@ namespace SJLee
                 MessageBox.Show("AI 모듈이 초기화되지 않았습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            Bitmap originalImage = Global.Inst.InspStage.GetCurrentImage();
+            Bitmap originalImage = Global.Inst.InspStage.GetOriginalImage();
             if (originalImage == null)
+            {
+                MessageBox.Show("원본 이미지가 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-
-            Bitmap inputForInspection = originalImage.Clone(
-                new Rectangle(0, 0, originalImage.Width, originalImage.Height),
-                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            }
+          //  Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
 
 
+          //  _saigeAI.RunInspection(bitmapresult);
 
-            //Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
-
-
-
-            _saigeAI.RunInspection(inputForInspection);
+            _saigeAI.RunInspection(originalImage);
 
             Bitmap resultImage = _saigeAI.GetResultImage();
 
