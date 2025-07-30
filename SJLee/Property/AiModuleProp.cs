@@ -45,6 +45,8 @@ namespace SJLee
                 openFileDialog.Title = "AI 모델 파일 선택";
                 openFileDialog.Filter = filter;
                 openFileDialog.Multiselect = false;
+                openFileDialog.InitialDirectory = @"C:\Saige\SaigeVision\engine\Examples\data\sfaw2023\models";
+
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
