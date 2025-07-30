@@ -226,6 +226,29 @@ namespace SJLee
             }
         }
 
+        private void DrawSegResult(SegmentationResult result, Bitmap bmp)
+        {
+            Graphics g = Graphics.FromImage(bmp);
+            int step = 10;
+
+          
+            foreach (var prediction in result.SegmentedObjects)
+            {
+                SolidBrush brush = new SolidBrush(Color.FromArgb(127, prediction.ClassInfo.Color));
+                using (GraphicsPath gp = new GraphicsPath())
+                {
+                    if (prediction.Contour.Value.Count < 4) continue;
+                    gp.AddPolygon(prediction.Contour.Value.ToArray());
+                    foreach (var innerValue in prediction.Contour.InnerValue)
+                    {
+                        gp.AddPolygon(innerValue.ToArray());
+                    }
+                    g.FillPath(brush, gp);
+                }
+                step += 50;
+            }
+        }
+
         public bool RunInspection(Bitmap bmpImage)
         {
             if (bmpImage == null)
