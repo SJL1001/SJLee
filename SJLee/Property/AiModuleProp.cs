@@ -121,7 +121,7 @@ namespace SJLee
             }
           //  Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
 
-            //Bitmap bitmap = Global.Inst.InspStage.AIModule.GetTestImage(); // 테스트 이미지 가져오기
+            
 
           //  _saigeAI.RunInspection(bitmapresult);
 
