@@ -20,22 +20,7 @@ namespace SJLee
             InitializeComponent();
             comboBoxAiModule.DataSource = Enum.GetValues(typeof(EngineType));
         }
-        /*
-        private void btnSelAIModel_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Title = "AI 모델 파일 선택";
-                openFileDialog.Filter = "AI Files|*.*;";
-                openFileDialog.Multiselect = false;
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    _modelPath = openFileDialog.FileName;
-                    txtAIModelPath.Text = _modelPath;
-                }
-            }
-        }
-        */
+      
         private void btnSelAIModel_Click(object sender, EventArgs e)
         {
             string filter = GetFilterBySelectedEngineType();
