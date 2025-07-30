@@ -121,6 +121,10 @@ namespace SJLee
             }
           //  Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
 
+<<<<<<< HEAD
+=======
+            
+>>>>>>> 250730#2
 
           //  _saigeAI.RunInspection(bitmapresult);
 
