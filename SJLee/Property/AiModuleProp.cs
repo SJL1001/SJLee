@@ -20,7 +20,22 @@ namespace SJLee
             InitializeComponent();
             comboBoxAiModule.DataSource = Enum.GetValues(typeof(EngineType));
         }
-      
+        /*
+        private void btnSelAIModel_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "AI 모델 파일 선택";
+                openFileDialog.Filter = "AI Files|*.*;";
+                openFileDialog.Multiselect = false;
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _modelPath = openFileDialog.FileName;
+                    txtAIModelPath.Text = _modelPath;
+                }
+            }
+        }
+        */
         private void btnSelAIModel_Click(object sender, EventArgs e)
         {
             string filter = GetFilterBySelectedEngineType();
@@ -30,8 +45,6 @@ namespace SJLee
                 openFileDialog.Title = "AI 모델 파일 선택";
                 openFileDialog.Filter = filter;
                 openFileDialog.Multiselect = false;
-                openFileDialog.InitialDirectory = @"C:\Saige\SaigeVision\engine\Examples\data\sfaw2023\models";
-
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -108,14 +121,7 @@ namespace SJLee
             }
           //  Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-            
->>>>>>> 250730#2
-=======
-              
->>>>>>> 250730#3
+            //Bitmap bitmap = Global.Inst.InspStage.AIModule.GetTestImage(); // 테스트 이미지 가져오기
 
           //  _saigeAI.RunInspection(bitmapresult);
 
