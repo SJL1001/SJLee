@@ -105,13 +105,13 @@ namespace SJLee
                 MessageBox.Show("원본 이미지가 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-          //  Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
+           Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
 
             
 
-          //  _saigeAI.RunInspection(bitmapresult);
+          _saigeAI.RunInspection(bitmapresult);
 
-            _saigeAI.RunInspection(originalImage);
+          //  _saigeAI.RunInspection(originalImage);
 
             Bitmap resultImage = _saigeAI.GetResultImage();
 

@@ -46,7 +46,6 @@ namespace SJLee
         Bitmap _inspImage = null;
 >>>>>>> 250730#1
 
-
         public SaigeAI()
         {
             _iadResults = new Dictionary<string, IADResult>();
@@ -141,8 +140,6 @@ namespace SJLee
                     _segEngine.SetInferenceOption(segOpt);
                     break;
             }
-
-
         }
 
 >>>>>>> 250730#1
@@ -225,12 +222,10 @@ namespace SJLee
                 step += 50;
             }
         }
-
         private void DrawSegResult(SegmentationResult result, Bitmap bmp)
         {
             Graphics g = Graphics.FromImage(bmp);
             int step = 10;
-
           
             foreach (var prediction in result.SegmentedObjects)
             {
@@ -378,12 +373,7 @@ namespace SJLee
                         DrawDetectionResult(_detResult, resultImage);
                     break;
 
-                /*
-            case EngineType.CLS:
-                if (_cLSresult != null && _cLSresult.ActivationMap != null)
-                    DrawCLSResult(_cLSresult, resultImage); // CAM 오버레이 함수 필요
-                break;
-                */
+           
                 case EngineType.SEG:
                     if (_segResult != null)
                         DrawSegResult(_segResult, resultImage);
@@ -392,9 +382,6 @@ namespace SJLee
 
             return resultImage ;
         }
-
-
-
 
         #region Disposable
         private bool disposed = false;
