@@ -1,131 +1,21 @@
-﻿using System;
-using MvCameraControl;
+﻿using MvCameraControl;
+using OpenCvSharp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
 
 namespace SJLee
 {
-    /*
-    struct GrabUserBuffer
+    class Test : GrabModel
+
     {
-         
-        private byte[] _imageBuffer;
-
-        private IntPtr _imageBufferPtr;
-
-        private GCHandle _imageHandle;
-
-        public byte[] ImageBuffer
+        internal override bool Create(string strIpAddr = null)
         {
-            get
-            {
-                return _imageBuffer;
-            }
-            set
-            {
-                _imageBuffer = value;
-            }
-        }
-        public IntPtr ImageBufferPtr
-        {
-            get
-            {
-                return _imageBufferPtr;
-            }
-            set
-            {
-                _imageBufferPtr = value;
-            }
-        }
-        public GCHandle ImageHandle
-        {
-            get
-            {
-                return _imageHandle;
-            }
-            set
-            {
-                _imageHandle = value;
-            }
-        }
-    }
-    */
-    internal class HikRobotCam 
-    {
-        /*
-        public delegate void GrabEventHandler<T>(object sender, T obj = null) where T : class;
-
-        public event GrabEventHandler<object> GrabCompleted;
-        public event GrabEventHandler<object> TransferCompleted;
-
-        protected GrabUserBuffer[] _userImageBuffer = null;
-
-        public int BufferIndex { get; set; } = 0;
-        internal bool HardwareTrigger { get; set; } = false;
-        internal bool IncreaseBufferIndex { get; set; } = false;
-
-        private IDevice _device = null;
-        void FrameGrabedEventHandler(object sender, FrameGrabbedEventArgs e)
-        {
-            Console.WriteLine("Get one frame: Width[{0}] , Height[{1}] , ImageSize[{2}], FrameNum[{3}]", e.FrameOut.Image.Width, e.FrameOut.Image.Height, e.FrameOut.Image.ImageSize, e.FrameOut.FrameNum);
-
-            IFrameOut frameOut = e.FrameOut;
-
-            OnGrabCompleted(BufferIndex);
-
-
-
-            if (_userImageBuffer[BufferIndex].ImageBuffer != null)
-            {
-                if (frameOut.Image.PixelType == MvGvspPixelType.PixelType_Gvsp_Mono8)  //모노
-                {
-                    if (_userImageBuffer[BufferIndex].ImageBuffer != null)
-                    {
-                        IntPtr ptrSourceTemp = frameOut.Image.PixelDataPtr;
-                        Marshal.Copy(ptrSourceTemp, _userImageBuffer[BufferIndex].ImageBuffer, 0, (int)frameOut.Image.ImageSize);
-                    }
-                }
-                else
-                {
-                    IImage inputImage = frameOut.Image;
-                    IImage outImage;
-                    MvGvspPixelType dstPixelType = MvGvspPixelType.PixelType_Gvsp_RGB8_Packed;   //bayer
-
-
-                    int result = _device.PixelTypeConverter.ConvertPixelType(inputImage, out outImage, dstPixelType);
-                    if (result != MvError.MV_OK)
-                    {
-                        Console.WriteLine("Image Convert failed:{0:x8}", result);
-                        return;
-                    }
-
-                    if (_userImageBuffer[BufferIndex].ImageBuffer != null)
-                    {
-                        IntPtr ptrSourceTemp = outImage.PixelDataPtr;
-                        Marshal.Copy(ptrSourceTemp, _userImageBuffer[BufferIndex].ImageBuffer, 0, (int)outImage.ImageSize);
-                    }
-                }
-            }
-            OnTransferCompleted(BufferIndex);
-
-            if (IncreaseBufferIndex)
-            {
-                BufferIndex++;
-                if (BufferIndex >= _userImageBuffer.Count())
-                    BufferIndex = 0;
-            }
-
-        }
-        private string _strIpAddr = "";
-        */
-        /*
-        internal bool Create(string strIpAddr = null)
-        {
-            // Initialize SDK
+        
             SDKSystem.Initialize();
 
             _strIpAddr = strIpAddr;
@@ -136,7 +26,7 @@ namespace SJLee
 
                 List<IDeviceInfo> devInfoList;
 
-                // Enum device
+              
                 int ret = DeviceEnumerator.EnumDevices(devLayerType, out devInfoList);
                 if (ret != MvError.MV_OK)
                 {
@@ -195,15 +85,64 @@ namespace SJLee
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message);
+           
                 ex.ToString();
                 return false;
             }
             return true;
         }
-        */
+        void FrameGrabedEventHandler(object sender, FrameGrabbedEventArgs e)
+        {
+            Console.WriteLine("Get one frame: Width[{0}] , Height[{1}] , ImageSize[{2}], FrameNum[{3}]", e.FrameOut.Image.Width, e.FrameOut.Image.Height, e.FrameOut.Image.ImageSize, e.FrameOut.FrameNum);
+
+            IFrameOut frameOut = e.FrameOut;
+
+            OnGrabCompleted(BufferIndex);
+
+            if (_userImageBuffer[BufferIndex].ImageBuffer != null)
+            {
+                if (frameOut.Image.PixelType == MvGvspPixelType.PixelType_Gvsp_Mono8)  //모노
+                {
+                    if (_userImageBuffer[BufferIndex].ImageBuffer != null)
+                    {
+                        IntPtr ptrSourceTemp = frameOut.Image.PixelDataPtr;
+                        Marshal.Copy(ptrSourceTemp, _userImageBuffer[BufferIndex].ImageBuffer, 0, (int)frameOut.Image.ImageSize);
+                    }
+                }
+                else
+                {
+                    IImage inputImage = frameOut.Image;
+                    IImage outImage;
+                    MvGvspPixelType dstPixelType = MvGvspPixelType.PixelType_Gvsp_RGB8_Packed;   //bayer
+
+
+                    int result = _device.PixelTypeConverter.ConvertPixelType(inputImage, out outImage, dstPixelType);
+                    if (result != MvError.MV_OK)
+                    {
+                        Console.WriteLine("Image Convert failed:{0:x8}", result);
+                        return;
+                    }
+
+                    if (_userImageBuffer[BufferIndex].ImageBuffer != null)
+                    {
+                        IntPtr ptrSourceTemp = outImage.PixelDataPtr;
+                        Marshal.Copy(ptrSourceTemp, _userImageBuffer[BufferIndex].ImageBuffer, 0, (int)outImage.ImageSize);
+                    }
+                }
+            }
+            OnTransferCompleted(BufferIndex);
+
+            if (IncreaseBufferIndex)
+            {
+                BufferIndex++;
+                if (BufferIndex >= _userImageBuffer.Count())
+                    BufferIndex = 0;
+            }
+
+        }
+       
         /*
-        internal bool InitGrab()
+        internal override bool InitGrab()
         {
             if (!Create())
                 return false;
@@ -214,9 +153,8 @@ namespace SJLee
             return true;
         }
         */
-
         /*
-        internal bool InitBuffer(int bufferCount = 1)
+        internal override bool InitBuffer(int bufferCount = 1)
         {
             if (bufferCount < 1)
                 return false;
@@ -224,8 +162,9 @@ namespace SJLee
             _userImageBuffer = new GrabUserBuffer[bufferCount];
             return true;
         }
-
-        internal bool SetBuffer(byte[] buffer, IntPtr bufferPtr, GCHandle bufferHandle, int bufferIndex = 0)
+        */
+        /*
+        internal override bool SetBuffer(byte[] buffer, IntPtr bufferPtr, GCHandle bufferHandle, int bufferIndex = 0)
         {
             _userImageBuffer[bufferIndex].ImageBuffer = buffer;
             _userImageBuffer[bufferIndex].ImageBufferPtr = bufferPtr;
@@ -235,8 +174,7 @@ namespace SJLee
         }
         */
 
-        /*
-        internal bool Grab(int bufferIndex, bool waitDone)
+        internal override bool Grab(int bufferIndex, bool waitDone)
         {
             if (_device == null)
                 return false;
@@ -262,10 +200,8 @@ namespace SJLee
 
             return ret;
         }
-        */
 
-        /*
-        internal bool Close()
+        internal override bool Close()
         {
             if (_device != null)
             {
@@ -275,8 +211,8 @@ namespace SJLee
 
             return true;
         }
-        
-        internal bool Open()
+
+        internal override bool Open()
         {
             try
             {
@@ -351,9 +287,7 @@ namespace SJLee
 
             return true;
         }
-        */
-        /*
-        internal bool Reconnect()
+        internal override bool Reconnect()
         {
             if (_device is null)
             {
@@ -363,8 +297,7 @@ namespace SJLee
             Close();
             return Open();
         }
-        
-        internal bool GetPixelBpp(out int pixelBpp)
+        internal override bool GetPixelBpp(out int pixelBpp)
         {
             pixelBpp = 8;
             if (_device == null)
@@ -385,23 +318,8 @@ namespace SJLee
 
             return true;
         }
-        
-        protected void OnGrabCompleted(object obj = null)
-        {
-            //Invoke는 델리게이트/ 이벤트 호출을 더 안전하고 명시적으로 표현하기 위한 표준적인 방법
-            GrabCompleted?.Invoke(this, obj);
-        }
 
-        protected void OnTransferCompleted(object obj = null)
-        {
-            //Invoke는 델리게이트/ 이벤트 호출을 더 안전하고 명시적으로 표현하기 위한 표준적인 방법
-            TransferCompleted?.Invoke(this, obj);
-        }
-        /*
-        #region Parameter Setting
-
-        /*
-        internal bool SetExposureTime(long exposure)
+        internal override bool SetExposureTime(long exposure)
         {
             if (_device == null)
                 return false;
@@ -416,8 +334,7 @@ namespace SJLee
 
             return true;
         }
-        
-        internal bool GetExposureTime(out long exposure)
+        internal override bool GetExposureTime(out long exposure)
         {
             exposure = 0;
             if (_device == null)
@@ -432,40 +349,8 @@ namespace SJLee
 
             return true;
         }
-
-        internal bool SetGain(long gain)
-        {
-            if (_device == null)
-                return false;
-
-            _device.Parameters.SetEnumValue("GainAuto", 0);
-            int result = _device.Parameters.SetFloatValue("Gain", gain);
-            if (result != MvError.MV_OK)
-            {
-                Console.WriteLine("Set Gain Time Fail!", result);
-                return false;
-            }
-
-            return true;
-        }
-
-        internal bool GetGain(out long gain)
-        {
-            gain = 0;
-            if (_device == null)
-                return false;
-
-            IFloatValue floatValue;
-            int result = _device.Parameters.GetFloatValue("Gain", out floatValue);
-            if (result == MvError.MV_OK)
-            {
-                gain = (long)floatValue.CurValue;
-            }
-
-            return true;
-        }
-
-        internal bool GetResolution(out int width, out int height, out int stride)
+       
+        internal override bool GetResolution(out int width, out int height, out int stride)
         {
             width = 0;
             height = 0;
@@ -511,12 +396,40 @@ namespace SJLee
 
             return true;
         }
-        */
-        /*
+
+
+        internal override bool SetTriggerMode(bool hardwareTrigger)
+        {
+            if (_device is null)
+                return false;
+
+            HardwareTrigger = hardwareTrigger;
+
+            if (HardwareTrigger)
+            {
+                _device.Parameters.SetEnumValueByString("TriggerSource", "Line0");
+            }
+            else
+            {
+                _device.Parameters.SetEnumValueByString("TriggerSource", "Software");
+            }
+
+            return true;
+        }
+            
+
+
+
+
+
+
+
+
         private bool _disposed = false;
 
-        protected virtual void Dispose(bool disposing)
+       internal override void Dispose()
         {
+            bool disposing = false;
             if (_disposed)
                 return;
 
@@ -536,48 +449,5 @@ namespace SJLee
             }
             _disposed = true;
         }
-        internal bool SetTriggerMode(bool hardwareTrigger)
-        {
-            if (_device is null)
-                return false;
-
-            HardwareTrigger = hardwareTrigger;
-
-            if (HardwareTrigger)
-            {
-                _device.Parameters.SetEnumValueByString("TriggerSource", "Line0");
-            }
-            else
-            {
-                _device.Parameters.SetEnumValueByString("TriggerSource", "Software");
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-        }
-        */
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

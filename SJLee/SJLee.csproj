@@ -54,8 +54,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MvCameraControl.Net">
-      <HintPath>..\..\..\..\..\SJLee\ExternalLib\Dll\HikRobot\MvCameraControl.Net.dll</HintPath>
+    <Reference Include="MvCameraControl.Net, Version=4.5.0.2, Culture=neutral, PublicKeyToken=a3c7c5e3a730cd12, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ExternalLib\Dll\HikRobot\MvCameraControl.Net.dll</HintPath>
     </Reference>
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -93,7 +94,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Grab\GrabModel.cs" />
     <Compile Include="Grab\HikRobotCam.cs" />
+    <Compile Include="RunForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RunForm.Designer.cs">
+      <DependentUpon>RunForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Grab\Test.cs" />
     <Compile Include="Util\BitmapExtension.cs" />
     <Compile Include="Core\Global.cs" />
     <Compile Include="Core\ImageSpace.cs" />
@@ -143,6 +152,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Inspect\SaigeAI.cs" />
+    <Compile Include="Grab\WebCam.cs" />
     <EmbeddedResource Include="ImageViewCtrl.resx">
       <DependentUpon>ImageViewCtrl.cs</DependentUpon>
     </EmbeddedResource>
@@ -173,6 +183,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="RunForm.resx">
+      <DependentUpon>RunForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -185,9 +198,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\..\..\..\SJLee\ExternalLib\Dll\HikRobot\MvCameraControl.Net.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

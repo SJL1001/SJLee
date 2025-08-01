@@ -22,7 +22,6 @@ namespace SJLee
             ChannelCount = 5,
         }
 
-        //검사와 관련된 이미지 버퍼를 관리하는 클래스
         public class ImageSpace : IDisposable
         {
             private class ImageInfo : IDisposable
@@ -77,10 +76,10 @@ namespace SJLee
                     if (_tempBitmap.PixelFormat == System.Drawing.Imaging.PixelFormat.Format8bppIndexed)
                     {
                         ColorPalette pal = _tempBitmap.Palette;
-                        // Generate grayscale colours:
+                        
                         for (Int32 i = 0; i < 256; i++)
                             pal.Entries[i] = Color.FromArgb(i, i, i);
-                        // Assign the edited palette to the bitmap.
+                        
                         _tempBitmap.Palette = pal;
                     }
                     return _tempBitmap;
@@ -148,7 +147,7 @@ namespace SJLee
                 public Mat ToMat()
                 {
                     var type = Bpp == 1 ? MatType.CV_8UC1 : MatType.CV_8UC3;
-                    //return new Mat(Height, Width, type, Ptr);
+                   
                     return Mat.FromPixelData(Height, Width, type, Ptr);
                 }
 

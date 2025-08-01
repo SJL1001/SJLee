@@ -99,12 +99,14 @@ namespace SJLee
                 MessageBox.Show("AI 모듈이 초기화되지 않았습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            /*
             Bitmap originalImage = Global.Inst.InspStage.GetOriginalImage();
             if (originalImage == null)
             {
                 MessageBox.Show("원본 이미지가 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            */
            Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
 
             

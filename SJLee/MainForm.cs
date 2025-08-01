@@ -26,6 +26,8 @@ namespace SJLee
             _dockPanel.Theme = new VS2015BlueTheme();
 
             LoadDockingWindows();
+
+            Global.Inst.Initialize();
         }
         private void LoadDockingWindows()
         {
@@ -36,6 +38,9 @@ namespace SJLee
 
             var propWindow = new PropertiesForm();
             propWindow.Show(_dockPanel, DockState.DockRight);
+
+            var runWindow = new RunForm();
+            runWindow.Show(cameraWindow.Pane, DockAlignment.Bottom, 0.2);
 
         }
         public static T GetDockForm<T>() where T : DockContent

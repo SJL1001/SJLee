@@ -26,7 +26,7 @@ namespace SJLee
             Image bitmap = Image.FromFile(filePath);
             imageViewCtrlMain.LoadBitmap((Bitmap)bitmap);
 
-            Global.Inst.InspStage.SetOriginalImage((Bitmap)bitmap);
+           // Global.Inst.InspStage.GetCurrentImage();
 
         }
 
@@ -57,6 +57,12 @@ namespace SJLee
 
         public void UpdateDisplay(Bitmap bitmap = null)
         {
+            if (bitmap == null)
+            {                
+                bitmap = Global.Inst.InspStage.GetBitmap(0);
+                if (bitmap == null)
+                    return;
+            }
             if (imageViewCtrlMain != null)
                 imageViewCtrlMain.LoadBitmap(bitmap);
         }
