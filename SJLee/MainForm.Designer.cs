@@ -43,11 +43,7 @@
             this.fileToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-<<<<<<< HEAD
-            this.mainMenu.Size = new System.Drawing.Size(1126, 33);
-=======
-            this.mainMenu.Size = new System.Drawing.Size(1224, 33);
->>>>>>> 250730#2
+            this.mainMenu.Size = new System.Drawing.Size(1178, 33);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "mainMenu";
             // 
@@ -78,11 +74,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-<<<<<<< HEAD
-            this.ClientSize = new System.Drawing.Size(1126, 618);
-=======
-            this.ClientSize = new System.Drawing.Size(1224, 590);
->>>>>>> 250730#2
+            this.ClientSize = new System.Drawing.Size(1178, 594);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
             this.Name = "MainForm";
