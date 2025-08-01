@@ -21,7 +21,7 @@ namespace SJLee
         SaigeAI _saigeAI; 
 
         public InspStage() { }
-
+          
         public ImageSpace ImageSpace
         {
             get => _imageSpace;
