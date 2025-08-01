@@ -1,4 +1,5 @@
-﻿using SaigeVision.Net.V2.IAD;
+﻿using OpenCvSharp;
+using SaigeVision.Net.V2.IAD;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,9 +18,10 @@ namespace SJLee
         private GrabModel _grabManager = null;
 
         private CameraType _camType = CameraType.WebCam;
-
-        SaigeAI _saigeAI; 
-
+       
+        SaigeAI _saigeAI;
+        BlobAlgorithm _blobAlgorithm = null; // Blob 알고리즘 인스턴스
+        private PreviewImage _previewImage = null;  
         public InspStage() { }
           
         public ImageSpace ImageSpace
@@ -35,9 +37,21 @@ namespace SJLee
                 return _saigeAI;
             }
         }
+        public BlobAlgorithm BlobAlgorithm
+        {
+            get => _blobAlgorithm;
+        }
+
+        public PreviewImage PreView
+        {
+            get => _previewImage;
+        }
+
         public bool Initialize()
         {
             _imageSpace = new ImageSpace();
+            _blobAlgorithm = new BlobAlgorithm();
+            _previewImage = new PreviewImage();
             switch (_camType)
             {
                
@@ -83,6 +97,19 @@ namespace SJLee
 
             //_grabManager.SetExposureTime(25000);
 
+            UpdateProperty();
+
+        }
+        private void UpdateProperty()
+        {
+            if (BlobAlgorithm is null)
+                return;
+
+            PropertiesForm propertiesForm = MainForm.GetDockForm<PropertiesForm>();
+            if (propertiesForm is null)
+                return;
+
+            propertiesForm.UpdateProperty(BlobAlgorithm);
         }
         public void SetBuffer(int bufferCount)
         {
@@ -181,6 +208,20 @@ namespace SJLee
                 return null;
 
             return Global.Inst.InspStage.ImageSpace.GetBitmap();
+        }
+
+        public Mat GetMat()
+        {
+            return Global.Inst.InspStage.ImageSpace.GetMat();
+        }
+
+        public void RedrawMainView()
+        {
+            CameraForm cameraForm = MainForm.GetDockForm<CameraForm>();
+            if (cameraForm != null)
+            {
+                cameraForm.UpdateImageViewer();
+            }
         }
         #region Disposable
         private bool disposed = false;

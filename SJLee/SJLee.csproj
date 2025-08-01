@@ -94,8 +94,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\BlobAlgorithm.cs" />
     <Compile Include="Grab\GrabModel.cs" />
     <Compile Include="Grab\HikRobotCam.cs" />
+    <Compile Include="Algorithm\InspAlgorithm.cs" />
+    <Compile Include="PreviewImage.cs" />
+    <Compile Include="UIControl\RangeTrackbar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIControl\RangeTrackbar.Designer.cs">
+      <DependentUpon>RangeTrackbar.cs</DependentUpon>
+    </Compile>
     <Compile Include="RunForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,10 +115,10 @@
     <Compile Include="Util\BitmapExtension.cs" />
     <Compile Include="Core\Global.cs" />
     <Compile Include="Core\ImageSpace.cs" />
-    <Compile Include="ImageViewCtrl.cs">
+    <Compile Include="UIControl\ImageViewCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ImageViewCtrl.Designer.cs">
+    <Compile Include="UIControl\ImageViewCtrl.Designer.cs">
       <DependentUpon>ImageViewCtrl.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\InspStage.cs" />
@@ -153,7 +162,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Inspect\SaigeAI.cs" />
     <Compile Include="Grab\WebCam.cs" />
-    <EmbeddedResource Include="ImageViewCtrl.resx">
+    <EmbeddedResource Include="UIControl\ImageViewCtrl.resx">
       <DependentUpon>ImageViewCtrl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Property\AiModuleProp.resx">

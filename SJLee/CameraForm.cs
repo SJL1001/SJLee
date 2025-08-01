@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenCvSharp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -65,6 +66,9 @@ namespace SJLee
             }
             if (imageViewCtrlMain != null)
                 imageViewCtrlMain.LoadBitmap(bitmap);
+
+            Mat curImage = Global.Inst.InspStage.GetMat();
+            Global.Inst.InspStage.PreView.SetImage(curImage);
         }
 
         public Bitmap GetDisplayImage()
@@ -76,6 +80,11 @@ namespace SJLee
 
             return curImage;
         }
+        public void UpdateImageViewer()
+        {
+            imageViewCtrlMain.Invalidate();
+        }
     }
+
 
 }

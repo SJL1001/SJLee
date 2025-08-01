@@ -28,31 +28,84 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.chkUse = new System.Windows.Forms.CheckBox();
+            this.grpBinary = new System.Windows.Forms.GroupBox();
+            this.cbHighlight = new System.Windows.Forms.ComboBox();
+            this.lbHighlight = new System.Windows.Forms.Label();
+            this.binRangeTrackbar = new SJLee.RangeTrackbar();
+            this.grpBinary.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // chkUse
             // 
-            this.button1.Location = new System.Drawing.Point(46, 70);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(76, 41);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.chkUse.Location = new System.Drawing.Point(265, 79);
+            this.chkUse.Name = "chkUse";
+            this.chkUse.Size = new System.Drawing.Size(104, 24);
+            this.chkUse.TabIndex = 6;
+            this.chkUse.Text = "검사";
+            this.chkUse.CheckedChanged += new System.EventHandler(this.chkUse_CheckedChanged);
+            // 
+            // grpBinary
+            // 
+            this.grpBinary.Controls.Add(this.lbHighlight);
+            this.grpBinary.Controls.Add(this.cbHighlight);
+            this.grpBinary.Controls.Add(this.binRangeTrackbar);
+            this.grpBinary.Location = new System.Drawing.Point(45, 129);
+            this.grpBinary.Name = "grpBinary";
+            this.grpBinary.Size = new System.Drawing.Size(413, 327);
+            this.grpBinary.TabIndex = 5;
+            this.grpBinary.TabStop = false;
+            this.grpBinary.Text = "groupBox1";
+            // 
+            // cbHighlight
+            // 
+            this.cbHighlight.FormattingEnabled = true;
+            this.cbHighlight.Location = new System.Drawing.Point(122, 219);
+            this.cbHighlight.Name = "cbHighlight";
+            this.cbHighlight.Size = new System.Drawing.Size(241, 26);
+            this.cbHighlight.TabIndex = 1;
+            this.cbHighlight.SelectedIndexChanged += new System.EventHandler(this.cbHighlight_SelectedIndexChanged);
+            // 
+            // lbHighlight
+            // 
+            this.lbHighlight.AutoSize = true;
+            this.lbHighlight.Location = new System.Drawing.Point(7, 219);
+            this.lbHighlight.Name = "lbHighlight";
+            this.lbHighlight.Size = new System.Drawing.Size(54, 18);
+            this.lbHighlight.TabIndex = 2;
+            this.lbHighlight.Text = "label1";
+            // 
+            // binRangeTrackbar
+            // 
+            this.binRangeTrackbar.Location = new System.Drawing.Point(45, 93);
+            this.binRangeTrackbar.Name = "binRangeTrackbar";
+            this.binRangeTrackbar.Size = new System.Drawing.Size(299, 67);
+            this.binRangeTrackbar.TabIndex = 0;
+            this.binRangeTrackbar.ValueLeft = 80;
+            this.binRangeTrackbar.ValueRight = 200;
             // 
             // BinaryProp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.grpBinary);
+            this.Controls.Add(this.chkUse);
             this.Name = "BinaryProp";
-            this.Size = new System.Drawing.Size(527, 441);
+            this.Size = new System.Drawing.Size(725, 531);
+            this.grpBinary.ResumeLayout(false);
+            this.grpBinary.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox chkUse;
+     
+   
+        private System.Windows.Forms.GroupBox grpBinary;
+        private System.Windows.Forms.Label lbHighlight;
+        private System.Windows.Forms.ComboBox cbHighlight;
+        private RangeTrackbar binRangeTrackbar;
     }
 }
