@@ -14,49 +14,38 @@ namespace SJLee
     public partial class RunForm : DockContent
     {
 
-        private Timer _liveTimer = new Timer();
-        private bool _isLive = false;
-        private int _liveBufferIndex = 0;
+       // private Timer _liveTimer = new Timer();
+       // private bool _isLive = false;
+     //   private int _liveBufferIndex = 0;
+       // private int _grabBufferIndex = 0;
         public RunForm()
         {
-            InitializeComponent();
+            InitializeComponent();          
         }
         private void btnGrab_Click(object sender, EventArgs e)
         {
             Global.Inst.InspStage.Grab(0);
+           // _grabBufferIndex = (_grabBufferIndex + 1) % InspStage.MAX_GRAB_BUF;
         }
 
         private void btnStartLive_Click(object sender, EventArgs e)
         {
-            if (!_isLive)
-            {
-                _isLive = true;
-                _liveTimer.Interval = 50; // (원하는 fps)
-                _liveTimer.Tick += LiveTimer_Tick;
-                _liveTimer.Start();
-                btnStartLive.Enabled = false;
-                btnStopLive.Enabled = true;
-            }
+      
+
+            Global.Inst.InspStage.StartLive();
         }
 
         private void btnStopLive_Click(object sender, EventArgs e)
         {
-            if (_isLive)
-            {
-                _isLive = false;
-                _liveTimer.Stop();
-                btnStartLive.Enabled = true;
-                btnStopLive.Enabled = false;
-            }
+           
+            Global.Inst.InspStage.StopLive();
         }
-        private void LiveTimer_Tick(object sender, EventArgs e)
+
+     
+        //#8_INSPECT_BINARY#20 검사 시작 버튼을 디자인창에서 만들고, 검사 함수 호출
+        private void btnStart_Click(object sender, EventArgs e)
         {
-            var inspStage = Global.Inst.InspStage; // 기존 파이프라인에서 가져옴
-            if (inspStage != null)
-            {
-                _liveBufferIndex = (_liveBufferIndex + 1) % InspStage.MAX_GRAB_BUF;
-                inspStage.Grab(_liveBufferIndex);   // Grab만 호출하면 끝!
-            }
+            Global.Inst.InspStage.TryInspection();
         }
     }
 }

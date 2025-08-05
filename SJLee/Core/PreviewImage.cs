@@ -14,11 +14,18 @@ namespace SJLee
         private Mat _orinalImage = null;
         private Mat _previewImage = null;
         private bool _usePreview = true;
+        //#10_INSPWINDOW#5 프리뷰를 위한 InspWindow 변수
+        private InspWindow _inspWindow = null;
+       
 
         public void SetImage(Mat image)
         {
             _orinalImage = image;
             _previewImage = new Mat();
+        }
+        public void SetInspWindow(InspWindow inspwindow)
+        {
+            _inspWindow = inspwindow;
         }
 
         //ShowBinaryMode에 따라 이진화 프리뷰 진행
@@ -43,7 +50,11 @@ namespace SJLee
             }
 
             Rect windowArea = new Rect(0, 0, _orinalImage.Width, _orinalImage.Height);
-
+            //#10_INSPWINDOW#7 InspWindow가 있다면 프리뷰 설정 영역을 ROI로 변경
+            if (_inspWindow != null)
+            {
+                windowArea = _inspWindow.WindowArea;
+            }
             Mat orgRoi = _orinalImage[windowArea];
 
             Mat grayImage = new Mat();

@@ -42,6 +42,10 @@ namespace SJLee
             var runWindow = new RunForm();
             runWindow.Show(cameraWindow.Pane, DockAlignment.Bottom, 0.2);
 
+            //#11_MODEL_TREE#1 검사 결과창 우측에 40% 비율로 모델트리 추가
+            var modelTreeWindow = new ModelTreeForm();
+            modelTreeWindow.Show(runWindow.Pane, DockAlignment.Right, 0.3);
+
         }
         public static T GetDockForm<T>() where T : DockContent
         {
@@ -88,6 +92,12 @@ namespace SJLee
                 }
             }
         
+        }
+
+        private void setUpMenu_Click(object sender, EventArgs e)
+        {
+            SetupForm setupForm = new SetupForm();
+            setupForm.ShowDialog();
         }
     }
 }

@@ -25,13 +25,15 @@ namespace SJLee
         {
             InitializeComponent();
 
+            /*
             LoadOptionControl(PropertyType.Filter);
             LoadOptionControl(PropertyType.Binary);
             LoadOptionControl(PropertyType.AiModule);
+            */
         }
-        private void LoadOptionControl(PropertyType propType)
+        private void LoadOptionControl(InspectType inspType)
         {
-            string tabName = propType.ToString();
+            string tabName = inspType.ToString();
 
 
             foreach (TabPage tabPage in tabPropControl.TabPages)
@@ -48,7 +50,7 @@ namespace SJLee
             }
 
 
-            UserControl _inspProp = CreateUserControl(propType);
+            UserControl _inspProp = CreateUserControl(inspType);
             if (_inspProp == null)
                 return;
 
@@ -66,22 +68,22 @@ namespace SJLee
         }
 
 
-        private UserControl CreateUserControl(PropertyType propType)
+        private UserControl CreateUserControl(InspectType inspPropType)
         {
             UserControl curProp = null;
-            switch (propType)
+            switch (inspPropType)
             {
-                case PropertyType.Binary:
+                case InspectType.InspBinary:
                     BinaryProp blobProp = new BinaryProp();
                     blobProp.RangeChanged += RangeSlider_RangeChanged;
                     blobProp.PropertyChanged += PropertyChanged;
                     curProp = blobProp;
                     break;
-                case PropertyType.Filter:
+                case InspectType.InspFilter:
                     ImageFilterProp filterProp = new ImageFilterProp();
                     curProp = filterProp;
                     break;
-                case PropertyType.AiModule:
+                case InspectType.InspAIModule:
                     AiModuleProp aiProp = new AiModuleProp();
                     curProp = aiProp;
                     break;
@@ -91,9 +93,23 @@ namespace SJLee
             }
             return curProp;
         }
-        public void UpdateProperty(BlobAlgorithm blobAlgorithm)
+        //#11_MODEL_TREE#3 InspWindow에서 사용하는 알고리즘을 모두 탭에 추가
+        public void ShowProperty(InspWindow window)
         {
-            if (blobAlgorithm is null)
+            foreach (InspAlgorithm algo in window.AlgorithmList)
+            {
+                LoadOptionControl(algo.InspectType);
+            }
+        }
+
+        public void ResetProperty()
+        {
+            tabPropControl.TabPages.Clear();
+        }
+
+        public void UpdateProperty(InspWindow window)
+        {
+            if (window is null)
                 return;
 
             foreach (TabPage tabPage in tabPropControl.TabPages)
@@ -104,7 +120,11 @@ namespace SJLee
 
                     if (uc is BinaryProp binaryProp)
                     {
-                        binaryProp.SetAlgorithm(blobAlgorithm);
+                        BlobAlgorithm blobAlgo = (BlobAlgorithm)window.FindInspAlgorithm(InspectType.InspBinary);
+                        if (blobAlgo is null)
+                            continue;
+
+                        binaryProp.SetAlgorithm(blobAlgo);
                     }
                 }
             }

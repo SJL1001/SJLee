@@ -9,79 +9,25 @@ using System.Threading.Tasks;
 
 namespace SJLee
 {
-    /*
-    struct GrabUserBuffer
+    internal class HikRobotCam : GrabModel
     {
-         
-        private byte[] _imageBuffer;
-
-        private IntPtr _imageBufferPtr;
-
-        private GCHandle _imageHandle;
-
-        public byte[] ImageBuffer
-        {
-            get
-            {
-                return _imageBuffer;
-            }
-            set
-            {
-                _imageBuffer = value;
-            }
-        }
-        public IntPtr ImageBufferPtr
-        {
-            get
-            {
-                return _imageBufferPtr;
-            }
-            set
-            {
-                _imageBufferPtr = value;
-            }
-        }
-        public GCHandle ImageHandle
-        {
-            get
-            {
-                return _imageHandle;
-            }
-            set
-            {
-                _imageHandle = value;
-            }
-        }
-    }
-    */
-    internal class HikRobotCam 
-    {
-        /*
-        public delegate void GrabEventHandler<T>(object sender, T obj = null) where T : class;
-
-        public event GrabEventHandler<object> GrabCompleted;
-        public event GrabEventHandler<object> TransferCompleted;
-
-        protected GrabUserBuffer[] _userImageBuffer = null;
-
-        public int BufferIndex { get; set; } = 0;
-        internal bool HardwareTrigger { get; set; } = false;
-        internal bool IncreaseBufferIndex { get; set; } = false;
+        //#5_CAMERA_INTERFACE#2 GrabModel로 내부 변수 이동
 
         private IDevice _device = null;
+
+        // 이미지 취득 콜백함수
         void FrameGrabedEventHandler(object sender, FrameGrabbedEventArgs e)
         {
             Console.WriteLine("Get one frame: Width[{0}] , Height[{1}] , ImageSize[{2}], FrameNum[{3}]", e.FrameOut.Image.Width, e.FrameOut.Image.Height, e.FrameOut.Image.ImageSize, e.FrameOut.FrameNum);
 
             IFrameOut frameOut = e.FrameOut;
 
+            // 영상 취득이 완료되었을 때 이벤트 발생
             OnGrabCompleted(BufferIndex);
-
-
 
             if (_userImageBuffer[BufferIndex].ImageBuffer != null)
             {
-                if (frameOut.Image.PixelType == MvGvspPixelType.PixelType_Gvsp_Mono8)  //모노
+                if (frameOut.Image.PixelType == MvGvspPixelType.PixelType_Gvsp_Mono8)
                 {
                     if (_userImageBuffer[BufferIndex].ImageBuffer != null)
                     {
@@ -93,9 +39,9 @@ namespace SJLee
                 {
                     IImage inputImage = frameOut.Image;
                     IImage outImage;
-                    MvGvspPixelType dstPixelType = MvGvspPixelType.PixelType_Gvsp_RGB8_Packed;   //bayer
+                    MvGvspPixelType dstPixelType = MvGvspPixelType.PixelType_Gvsp_RGB8_Packed;
 
-
+                    // Pixel type convert 
                     int result = _device.PixelTypeConverter.ConvertPixelType(inputImage, out outImage, dstPixelType);
                     if (result != MvError.MV_OK)
                     {
@@ -110,20 +56,23 @@ namespace SJLee
                     }
                 }
             }
+
+            // 영상 전송이 완료되었을 때 이벤트 발생
             OnTransferCompleted(BufferIndex);
 
+            //IO 트리거 촬상시 최대 버퍼를 넘으면 첫번째 버퍼로 변경
             if (IncreaseBufferIndex)
             {
                 BufferIndex++;
                 if (BufferIndex >= _userImageBuffer.Count())
                     BufferIndex = 0;
             }
-
         }
-        private string _strIpAddr = "";
-        */
-        /*
-        internal bool Create(string strIpAddr = null)
+
+        #region Method
+
+        //#5_CAMERA_INTERFACE#3 GrabModel에서 상속받은 함수를 위해 override 추가
+        internal override bool Create(string strIpAddr = null)
         {
             // Initialize SDK
             SDKSystem.Initialize();
@@ -201,42 +150,8 @@ namespace SJLee
             }
             return true;
         }
-        */
-        /*
-        internal bool InitGrab()
-        {
-            if (!Create())
-                return false;
 
-            if (!Open())
-                return false;
-
-            return true;
-        }
-        */
-
-        /*
-        internal bool InitBuffer(int bufferCount = 1)
-        {
-            if (bufferCount < 1)
-                return false;
-
-            _userImageBuffer = new GrabUserBuffer[bufferCount];
-            return true;
-        }
-
-        internal bool SetBuffer(byte[] buffer, IntPtr bufferPtr, GCHandle bufferHandle, int bufferIndex = 0)
-        {
-            _userImageBuffer[bufferIndex].ImageBuffer = buffer;
-            _userImageBuffer[bufferIndex].ImageBufferPtr = bufferPtr;
-            _userImageBuffer[bufferIndex].ImageHandle = bufferHandle;
-
-            return true;
-        }
-        */
-
-        /*
-        internal bool Grab(int bufferIndex, bool waitDone)
+        internal override bool Grab(int bufferIndex, bool waitDone)
         {
             if (_device == null)
                 return false;
@@ -262,10 +177,8 @@ namespace SJLee
 
             return ret;
         }
-        */
 
-        /*
-        internal bool Close()
+        internal override bool Close()
         {
             if (_device != null)
             {
@@ -275,8 +188,8 @@ namespace SJLee
 
             return true;
         }
-        
-        internal bool Open()
+
+        internal override bool Open()
         {
             try
             {
@@ -315,7 +228,7 @@ namespace SJLee
                         }
                     }
 
-
+                    // set trigger mode as off
                     ret = _device.Parameters.SetEnumValue("TriggerMode", 1);
                     if (ret != MvError.MV_OK)
                     {
@@ -332,9 +245,10 @@ namespace SJLee
                         _device.Parameters.SetEnumValueByString("TriggerSource", "Software");
                     }
 
+                    // Register image callback
                     _device.StreamGrabber.FrameGrabedEvent += FrameGrabedEventHandler;
 
-
+                    // start grab image
                     ret = _device.StreamGrabber.StartGrabbing();
                     if (ret != MvError.MV_OK)
                     {
@@ -351,9 +265,8 @@ namespace SJLee
 
             return true;
         }
-        */
-        /*
-        internal bool Reconnect()
+
+        internal override bool Reconnect()
         {
             if (_device is null)
             {
@@ -363,8 +276,8 @@ namespace SJLee
             Close();
             return Open();
         }
-        
-        internal bool GetPixelBpp(out int pixelBpp)
+
+        internal override bool GetPixelBpp(out int pixelBpp)
         {
             pixelBpp = 8;
             if (_device == null)
@@ -385,23 +298,11 @@ namespace SJLee
 
             return true;
         }
-        
-        protected void OnGrabCompleted(object obj = null)
-        {
-            //Invoke는 델리게이트/ 이벤트 호출을 더 안전하고 명시적으로 표현하기 위한 표준적인 방법
-            GrabCompleted?.Invoke(this, obj);
-        }
+        #endregion
 
-        protected void OnTransferCompleted(object obj = null)
-        {
-            //Invoke는 델리게이트/ 이벤트 호출을 더 안전하고 명시적으로 표현하기 위한 표준적인 방법
-            TransferCompleted?.Invoke(this, obj);
-        }
-        /*
+
         #region Parameter Setting
-
-        /*
-        internal bool SetExposureTime(long exposure)
+        internal override bool SetExposureTime(long exposure)
         {
             if (_device == null)
                 return false;
@@ -416,8 +317,8 @@ namespace SJLee
 
             return true;
         }
-        
-        internal bool GetExposureTime(out long exposure)
+
+        internal override bool GetExposureTime(out long exposure)
         {
             exposure = 0;
             if (_device == null)
@@ -433,7 +334,7 @@ namespace SJLee
             return true;
         }
 
-        internal bool SetGain(long gain)
+        internal override bool SetGain(float gain)
         {
             if (_device == null)
                 return false;
@@ -449,7 +350,7 @@ namespace SJLee
             return true;
         }
 
-        internal bool GetGain(out long gain)
+        internal override bool GetGain(out float gain)
         {
             gain = 0;
             if (_device == null)
@@ -459,13 +360,13 @@ namespace SJLee
             int result = _device.Parameters.GetFloatValue("Gain", out floatValue);
             if (result == MvError.MV_OK)
             {
-                gain = (long)floatValue.CurValue;
+                gain = floatValue.CurValue;
             }
 
             return true;
         }
 
-        internal bool GetResolution(out int width, out int height, out int stride)
+        internal override bool GetResolution(out int width, out int height, out int stride)
         {
             width = 0;
             height = 0;
@@ -511,32 +412,8 @@ namespace SJLee
 
             return true;
         }
-        */
-        /*
-        private bool _disposed = false;
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_disposed)
-                return;
-
-            if (disposing)
-            {
-                if (_device != null)
-                {
-                    _device.StreamGrabber.FrameGrabedEvent -= FrameGrabedEventHandler;
-                    _device.StreamGrabber.StopGrabbing();
-                    _device.Close();
-                    _device.Dispose();
-                    _device = null;
-
-                    // Finalize SDK
-                    SDKSystem.Finalize();
-                }
-            }
-            _disposed = true;
-        }
-        internal bool SetTriggerMode(bool hardwareTrigger)
+        internal override bool SetTriggerMode(bool hardwareTrigger)
         {
             if (_device is null)
                 return false;
@@ -557,11 +434,38 @@ namespace SJLee
 
         #endregion
 
-        public void Dispose()
+        #region Dispose
+
+        private bool _disposed = false;
+
+        protected void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+            {
+                if (_device != null)
+                {
+                    _device.StreamGrabber.FrameGrabedEvent -= FrameGrabedEventHandler;
+                    _device.StreamGrabber.StopGrabbing();
+                    _device.Close();
+                    _device.Dispose();
+                    _device = null;
+
+                    // Finalize SDK
+                    SDKSystem.Finalize();
+                }
+            }
+            _disposed = true;
+        }
+
+        //#5_CAMERA_INTERFACE#4 Dispose도 GrabModel에서 상속받아 사용
+        internal override void Dispose()
         {
             Dispose(disposing: true);
         }
-        */
+        #endregion //Disposable
     }
 
 }

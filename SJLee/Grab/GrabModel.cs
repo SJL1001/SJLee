@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace SJLee
 {
+
     public enum CameraType
     {
         [Description("사용안함")]
-        None = 0,
+        None,
         [Description("웹캠")]
         WebCam,
         [Description("HikRobot 카메라")]
@@ -100,8 +101,8 @@ namespace SJLee
         internal abstract bool SetExposureTime(long exposure);
 
         internal abstract bool GetExposureTime(out long exposure);
-     //   internal abstract bool SetGain(long gain);
-       // internal abstract bool GetGain(out long gain);
+        internal abstract bool SetGain(float gain);
+        internal abstract bool GetGain(out float gain);
         internal abstract bool GetResolution(out int width, out int height, out int stride);
 
         internal abstract bool SetTriggerMode(bool hardwareTrigger);
@@ -132,7 +133,8 @@ namespace SJLee
             _userImageBuffer = new GrabUserBuffer[bufferCount];
             return true;
         }
-        internal  bool SetGain(long gain)
+        /*
+        internal virtual bool SetGain(long gain)
         {
             if (_device == null)
                 return false;
@@ -147,7 +149,7 @@ namespace SJLee
 
             return true;
         }
-        internal  bool GetGain(out long gain)
+        internal virtual bool GetGain(out long gain)
         {
             gain = 0;
             if (_device == null)
@@ -162,7 +164,7 @@ namespace SJLee
 
             return true;
         }
-
+        */
         protected virtual void OnGrabCompleted(object obj = null)
         {
            
@@ -180,26 +182,8 @@ namespace SJLee
         internal abstract void Dispose();
 
 
-        private VideoCapture _capture = null;
-        internal  bool SetGain(float gain)
-        {
-            if (_capture == null)
-                return false;
 
-            _capture.Set(VideoCaptureProperties.Gain, gain);
-            return true;
-
-        }
-
-        internal  bool GetGain(out float gain)
-        {
-            gain = 0;
-            if (_capture == null)
-                return false;
-
-            gain = (long)_capture.Get(VideoCaptureProperties.Gain);
-            return true;
-        }
+   
     }
 
 

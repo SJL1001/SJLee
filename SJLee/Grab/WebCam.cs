@@ -30,6 +30,7 @@ namespace SJLee
 
         internal override bool Grab(int bufferIndex, bool waitDone)
         {
+            BufferIndex = bufferIndex;
             if (_frame is null)
                 _frame = new Mat();
 
@@ -54,12 +55,14 @@ namespace SJLee
 
                 OnTransferCompleted(BufferIndex);
 
+                
                 if (IncreaseBufferIndex)
                 {
                     BufferIndex++;
                     if (BufferIndex >= _userImageBuffer.Count())
                         BufferIndex = 0;
                 }
+                
             }
             return true;
         }
@@ -131,7 +134,7 @@ namespace SJLee
             exposure = (long)_capture.Get(VideoCaptureProperties.Exposure);
             return true;
         }
-        /*
+        
         internal override bool SetGain(float gain)
         {
             if (_capture == null)
@@ -150,7 +153,7 @@ namespace SJLee
             gain = (long)_capture.Get(VideoCaptureProperties.Gain);
             return true;
         }
-        */
+        
         internal override bool GetResolution(out int width, out int height, out int stride)
         {
             width = 0;

@@ -342,10 +342,14 @@ namespace SJLee
 
             public byte[] GetInspectionBuffer(int index = 0)
             {
-                if (_imageInfo.Count <= index)
-                    return null;
+            if (_imageInfo.Count <= index)
+            {
+                Console.WriteLine($"[ImageSpace] GetInspectionBuffer({index}) = null! _imageInfo.Count={_imageInfo.Count}");
+                // 혹은 예외 throw
+                return null;
+            }
 
-                return _imageInfo[index].ImageData;
+            return _imageInfo[index].ImageData;
             }
 
             public IntPtr GetnspectionBufferPtr(int index = 0)
@@ -364,6 +368,7 @@ namespace SJLee
                 return _imageInfo[index].Handle;
             }
 
+        
             public Bitmap GetBitmap(int index = 0, eImageChannel channel = eImageChannel.Color)
             {
                 if (index < 0 || _imageInfo.Count <= index)
@@ -378,8 +383,9 @@ namespace SJLee
                     return _imageByChannel[index][channel].ToBitmap();
                 }
             }
+       
 
-            public Mat GetMat(int index = 0, eImageChannel channel = eImageChannel.Gray)
+        public Mat GetMat(int index = 0, eImageChannel channel = eImageChannel.Gray)
             {
                 if (_imageInfo.Count <= index)
                     return null;
@@ -492,3 +498,4 @@ namespace SJLee
         }
     }
 
+    

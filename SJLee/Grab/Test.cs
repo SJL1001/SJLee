@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SJLee
 {
+    /*
     class Test : GrabModel
 
     {
@@ -173,7 +174,7 @@ namespace SJLee
             return true;
         }
         */
-
+        /*
         internal override bool Grab(int bufferIndex, bool waitDone)
         {
             if (_device == null)
@@ -448,6 +449,6 @@ namespace SJLee
                 }
             }
             _disposed = true;
-        }
-    }
+        }*/
+  //  }
 }

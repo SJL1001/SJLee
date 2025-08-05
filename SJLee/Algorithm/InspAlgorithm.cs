@@ -11,6 +11,8 @@ namespace SJLee
     {
         InspNone = -1,
         InspBinary,
+        InspFilter,
+        InspAIModule,
         InspCount
     }
     public abstract class InspAlgorithm
@@ -22,6 +24,10 @@ namespace SJLee
         public bool IsUse { get; set; } = true;
         //검사가 완료되었는지를 판단
         public bool IsInspected { get; set; } = false;
+        //#8_INSPECT_BINARY#1 검사할 영역 정보를 저장하는 변수
+        public Rect TeachRect { get; set; }
+        public Rect InspRect { get; set; }
+
 
         //검사할 원본 이미지
         protected Mat _srcImage = null;
@@ -32,6 +38,25 @@ namespace SJLee
         //불량 여부
         public bool IsDefect { get; set; }
 
+        //#10_INSPWINDOW#2 InspWindow 복사를 위한 InspAlgorithm 복사 함수
+        public abstract InspAlgorithm Clone();
+        public abstract bool CopyFrom(InspAlgorithm sourceAlgo);
+
+        /// <summary>자식 클래스에서 공통 필드를 복사하려고 부르는 헬퍼</summary>
+        protected void CopyBaseTo(InspAlgorithm target)
+        {
+            target.InspectType = this.InspectType;
+            target.IsUse = this.IsUse;
+            target.IsInspected = this.IsInspected;
+            target.TeachRect = this.TeachRect;
+            target.InspRect = this.InspRect;
+            // NOTE: _srcImage 는 런타임 검사용이라 복사하지 않음
+        }
+        public virtual void SetInspData(Mat srcImage)
+        {
+            _srcImage = srcImage;
+        }
+
         //검사 함수로, 상속 받는 클래스는 필수로 구현해야한다.
         public abstract bool DoInspect();
 
@@ -41,6 +66,11 @@ namespace SJLee
             IsInspected = false;
             IsDefect = false;
             ResultString.Clear();
+        }
+        public virtual int GetResultRect(out List<DrawInspectInfo> resultArea)
+        {
+            resultArea = null;
+            return 0;
         }
     }
 }
