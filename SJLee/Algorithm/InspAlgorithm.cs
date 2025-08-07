@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SJLee
 {
@@ -13,8 +14,13 @@ namespace SJLee
         InspBinary,
         InspFilter,
         InspAIModule,
-        InspCount
+        InspCount,
+        InspMatch,  
     }
+    //#12_MODEL SAVE#7 Xml Serialize를 위해서, 아래 코드 추가
+    //XmlSerialize는 추상화된 상태를 알수 없어, 상속된 클래스를 명시적으로 포함해야 함.
+    [XmlInclude(typeof(MatchAlgorithm))]
+    [XmlInclude(typeof(BlobAlgorithm))]
     public abstract class InspAlgorithm
     {
         //알고리즘 타입 정의
@@ -28,7 +34,7 @@ namespace SJLee
         public Rect TeachRect { get; set; }
         public Rect InspRect { get; set; }
 
-
+        public eImageChannel ImageChannel { get; set; } = eImageChannel.Gray;
         //검사할 원본 이미지
         protected Mat _srcImage = null;
 

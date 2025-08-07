@@ -24,6 +24,8 @@ namespace SJLee
         }
         private void btnGrab_Click(object sender, EventArgs e)
         {
+            //#13_SET_IMAGE_BUFFER#3 그랩시 이미지 버퍼를 먼저 설정하도록 변경
+            Global.Inst.InspStage.CheckImageBuffer();
             Global.Inst.InspStage.Grab(0);
            // _grabBufferIndex = (_grabBufferIndex + 1) % InspStage.MAX_GRAB_BUF;
         }
@@ -32,12 +34,20 @@ namespace SJLee
         {
       
 
-            Global.Inst.InspStage.StartLive();
+          //  Global.Inst.InspStage.StartLive();
+            Global.Inst.InspStage.LiveMode = !Global.Inst.InspStage.LiveMode;
+
+            if (Global.Inst.InspStage.LiveMode)
+            {
+                //#13_SET_IMAGE_BUFFER#4 그랩시 이미지 버퍼를 먼저 설정하도록 변경
+                Global.Inst.InspStage.CheckImageBuffer();
+                Global.Inst.InspStage.Grab(0);
+            }
         }
 
         private void btnStopLive_Click(object sender, EventArgs e)
         {
-           
+            Global.Inst.InspStage.CheckImageBuffer();
             Global.Inst.InspStage.StopLive();
         }
 

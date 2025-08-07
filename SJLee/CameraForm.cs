@@ -23,8 +23,10 @@ namespace SJLee
         }
         private void imageViewCtrlMain_DiagramEntityEvent(object sender, DiagramEntityEventArgs e)
         {
+            SLogger.Write($"ImageViewer Action {e.ActionType.ToString()}");
             switch (e.ActionType)
             {
+
                 case EntityActionType.Select:
                     Global.Inst.InspStage.SelectInspWindow(e.InspWindow);
                     imageViewCtrlMain.Focus();
@@ -61,25 +63,10 @@ namespace SJLee
             Image bitmap = Image.FromFile(filePath);
             imageViewCtrlMain.LoadBitmap((Bitmap)bitmap);
 
-            Global.Inst.InspStage.GetCurrentImage();
+           // Global.Inst.InspStage.GetCurrentImage();
 
-        }
-
-        /*
-        public void SaveImage(string filePath)
-        {
-            if (imageViewCtrlMain != null )
-            {
-                imageViewCtrlMain.Image.Save(filePath);
-            }
-            else
-            {
-                MessageBox.Show("이미지가 없습니다.", "error");
-            }
-        
-        }
-        */
-        
+        }            
+  
 
         private void CameraForm_Resize(object sender, EventArgs e)
         {
@@ -105,18 +92,14 @@ namespace SJLee
             Global.Inst.InspStage.PreView.SetImage(curImage);
         }
 
-        public Bitmap GetDisplayImage()
+        public Mat GetDisplayImage()
         {
-            Bitmap curImage = null;
-
-            if (imageViewCtrlMain != null)
-                curImage = imageViewCtrlMain.GetCurBitmap();
-
-            return curImage;
+            return Global.Inst.InspStage.ImageSpace.GetMat();
         }
         public void UpdateImageViewer()
         {
-            imageViewCtrlMain.Invalidate();
+            imageViewCtrlMain.UpdateInspParam();
+            imageViewCtrlMain   .Invalidate();
         }
         public void UpdateDiagramEntity()
         {
@@ -164,6 +147,12 @@ namespace SJLee
         public void AddRoi(InspWindowType inspWindowType)
         {
             imageViewCtrlMain.NewRoi(inspWindowType);
+        }
+
+        //#13_INSP_RESULT#6 검사 양불판정 갯수 설정 함수
+        public void SetInspResultCount(int totalArea, int okCnt, int ngCnt)
+        {
+            imageViewCtrlMain.SetInspResultCount(new InspectResultCount(totalArea, okCnt, ngCnt));
         }
     }
 

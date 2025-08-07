@@ -14,13 +14,14 @@ namespace SJLee
    
         public enum eImageChannel : int
         {
-            Color,
-            Gray,
-            Red,
-            Green,
-            Blue,
-            ChannelCount = 5,
-        }
+        None = -1,
+        Color,
+        Gray,
+        Red,
+        Green,
+        Blue,
+        ChannelCount,
+    }
 
         public class ImageSpace : IDisposable
         {
@@ -194,7 +195,11 @@ namespace SJLee
 
                 Dispose();
 
-                Func<int, ImageInfo> newImageInfo = (x) =>
+
+            _imageByChannel.Clear();
+            _imageInfo.Clear();
+
+            Func<int, ImageInfo> newImageInfo = (x) =>
                 {
                     var imageInfo = new ImageInfo();
                     imageInfo.PixelBpp = x;
@@ -390,7 +395,7 @@ namespace SJLee
                 if (_imageInfo.Count <= index)
                     return null;
 
-                if (channel == eImageChannel.Gray)
+                if (channel == eImageChannel.Color)
                 {
                     return _imageInfo[index].ToMat();
                 }

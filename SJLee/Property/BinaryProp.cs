@@ -45,8 +45,8 @@ namespace SJLee
             // TrackBar 초기 설정
             binRangeTrackbar.RangeChanged += Range_RangeChanged;
 
-            binRangeTrackbar.ValueLeft = 0;
-            binRangeTrackbar.ValueRight = 128;
+            binRangeTrackbar.ValueLeft = 40;
+            binRangeTrackbar.ValueRight = 180;
 
 
             //이진화 프리뷰 콤보박스 초기화 설정

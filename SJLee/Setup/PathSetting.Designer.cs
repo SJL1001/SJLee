@@ -77,6 +77,7 @@
             this.btnSelModelDir.TabIndex = 4;
             this.btnSelModelDir.Text = "...";
             this.btnSelModelDir.UseVisualStyleBackColor = true;
+            this.btnSelModelDir.Click += new System.EventHandler(this.btnSelModelDir_Click);
             // 
             // btnSelImageDir
             // 
@@ -86,6 +87,7 @@
             this.btnSelImageDir.TabIndex = 5;
             this.btnSelImageDir.Text = "...";
             this.btnSelImageDir.UseVisualStyleBackColor = true;
+            this.btnSelImageDir.Click += new System.EventHandler(this.btnSelImageDir_Click);
             // 
             // btnApply
             // 
@@ -95,6 +97,7 @@
             this.btnApply.TabIndex = 6;
             this.btnApply.Text = "적용";
             this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // PathSetting
             // 

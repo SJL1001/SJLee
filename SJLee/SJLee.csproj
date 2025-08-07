@@ -53,10 +53,16 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\SJLEE2\ExternalLib\Dll\Log4Net\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MvCameraControl.Net, Version=4.5.0.2, Culture=neutral, PublicKeyToken=a3c7c5e3a730cd12, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalLib\Dll\HikRobot\MvCameraControl.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="ObjectListView">
+      <HintPath>..\..\..\SJLEE2\ExternalLib\Dll\ObjectListView\ObjectListView.dll</HintPath>
     </Reference>
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -97,11 +103,44 @@
     <Compile Include="Algorithm\BlobAlgorithm.cs" />
     <Compile Include="Core\Define.cs" />
     <Compile Include="Algorithm\DrawInspectInfo.cs" />
+    <Compile Include="Algorithm\MatchAlgorithm.cs" />
+    <Compile Include="Inspect\InspResult.cs" />
+    <Compile Include="LogForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogForm.Designer.cs">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewModel.Designer.cs">
+      <DependentUpon>NewModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Property\MatchInspProp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Property\MatchInspProp.Designer.cs">
+      <DependentUpon>MatchInspProp.cs</DependentUpon>
+    </Compile>
     <Compile Include="ModelTreeForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ModelTreeForm.Designer.cs">
       <DependentUpon>ModelTreeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ResultForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResultForm.Designer.cs">
+      <DependentUpon>ResultForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SLogger.cs" />
+    <Compile Include="UIControl\PatternImageEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIControl\PatternImageEditor.Designer.cs">
+      <DependentUpon>PatternImageEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Setup\PathSetting.cs">
       <SubType>UserControl</SubType>
@@ -194,8 +233,20 @@
     <Compile Include="Inspect\SaigeAI.cs" />
     <Compile Include="Grab\WebCam.cs" />
     <Compile Include="Util\XmlHelper.cs" />
+    <EmbeddedResource Include="LogForm.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewModel.resx">
+      <DependentUpon>NewModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Property\MatchInspProp.resx">
+      <DependentUpon>MatchInspProp.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ModelTreeForm.resx">
       <DependentUpon>ModelTreeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIControl\PatternImageEditor.resx">
+      <DependentUpon>PatternImageEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SetupForm.resx">
       <DependentUpon>SetupForm.cs</DependentUpon>
@@ -239,6 +290,9 @@
     <EmbeddedResource Include="RunForm.resx">
       <DependentUpon>RunForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

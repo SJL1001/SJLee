@@ -107,11 +107,18 @@ namespace SJLee
                 return;
             }
             */
-           Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
+            //  Bitmap bitmapresult = Global.Inst.InspStage.GetCurrentImage();
+            Bitmap bitmap = Global.Inst.InspStage.GetBitmap();
+            if (bitmap is null)
+            {
+                MessageBox.Show("현재 이미지가 없습니다.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            
+           // _saigeAI.InspAIModule(bitmap);
 
-          _saigeAI.RunInspection(bitmapresult);
+
+             _saigeAI.RunInspection(bitmap);
 
           //  _saigeAI.RunInspection(originalImage);
 

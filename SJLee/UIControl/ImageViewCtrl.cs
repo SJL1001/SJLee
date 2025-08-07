@@ -24,6 +24,22 @@ namespace SJLee
         DeleteList,
         UpdateImage
     }
+
+    //#13_INSP_RESULT#3 검사 양불판정 갯수를 화면에 표시하기 위한 구조체
+    public struct InspectResultCount
+    {
+        public int Total { get; set; }
+        public int OK { get; set; }
+        public int NG { get; set; }
+
+        public InspectResultCount(int _totalCount, int _okCount, int _ngCount)
+        {
+            Total = _totalCount;
+            OK = _okCount;
+            NG = _ngCount;
+        }
+    }
+
     public partial class ImageViewCtrl : UserControl
     {
         //ROI를 추가,수정,삭제 등으로 변경 시, 이벤트 발생
@@ -45,6 +61,9 @@ namespace SJLee
         private const float MaxZoom = 100.0f;
 
         private List<DrawInspectInfo> _rectInfos = new List<DrawInspectInfo>();
+
+         //#13_INSP_RESULT#4 검사 양불 판정 갯수를 화면에 표시하기 위한 변수
+        private InspectResultCount _inspectResultCount = new InspectResultCount();
         //#10_INSPWINDOW#15 ROI 편집에 필요한 변수 선언
         private Point _roiStart = Point.Empty;
         private Rectangle _roiRect = Rectangle.Empty;
@@ -320,7 +339,11 @@ namespace SJLee
                     g.DrawRectangle(pen, rect);
                 }
             }
-
+            if (_multiSelectedEntities.Count <= 1 && _selEntity != null)
+            {
+                //#11_MATCHING#8 패턴매칭할 영역 표시
+                DrawInspParam(g, _selEntity.LinkedWindow);
+            }
             //선택 영역 박스 그리기
             if (_isBoxSelecting && !_selectionBox.IsEmpty)
             {
@@ -395,6 +418,16 @@ namespace SJLee
                     }
                 }
             }
+            //#13_INSP_RESULT#5 검사 양불판정 갯수 화면에 표시
+            if (_inspectResultCount.Total > 0)
+            {
+                string resultText = $"Total: {_inspectResultCount.Total}\r\nOK: {_inspectResultCount.OK}\r\nNG: {_inspectResultCount.NG}";
+
+                float fontSize = 12.0f;
+                Color resultColor = Color.FromArgb(255, 255, 255);
+                PointF textPos = new PointF(Width - 80, 10);
+                DrawText(g, resultText, textPos, fontSize, resultColor);
+            }
         }
 
         private void DrawText(Graphics g, string text, PointF position, float fontSize, Color color)
@@ -418,6 +451,45 @@ namespace SJLee
 
                 // 본문 텍스트
                 g.DrawString(text, font, textBrush, position);
+            }
+        }
+        //#11_MATCHING#9 패턴매칭할 영역 크기 얻는 함수,
+        //이 함수를 사용하는 코드도 참조 확인하여 추가할것
+        public void UpdateInspParam()
+        {
+            _extSize.Width = _extSize.Height = 0;
+
+            if (_selEntity is null)
+                return;
+
+            InspWindow window = _selEntity.LinkedWindow;
+            if (window is null)
+                return;
+
+            MatchAlgorithm matchAlgo = (MatchAlgorithm)window.FindInspAlgorithm(InspectType.InspMatch);
+            if (matchAlgo != null)
+            {
+                _extSize.Width = matchAlgo.ExtSize.Width;
+                _extSize.Height = matchAlgo.ExtSize.Height;
+            }
+        }
+
+        private void DrawInspParam(Graphics g, InspWindow window)
+        {
+            if (_extSize.Width > 0 || _extSize.Height > 0)
+            {
+                Rectangle extArea = new Rectangle(_roiRect.Left - _extSize.Width,
+                    _roiRect.Top - _extSize.Height,
+                    _roiRect.Width + _extSize.Width * 2,
+                    _roiRect.Height + _extSize.Height * 2);
+                Rectangle screenRect = VirtualToScreen(extArea);
+
+                using (Pen pen = new Pen(Color.White, 2))
+                {
+                    pen.DashStyle = DashStyle.Dot;
+                    pen.Width = 2;
+                    g.DrawRectangle(pen, screenRect);
+                }
             }
         }
         //#10_INSPWINDOW#19 ROI 편집을 위한 마우스 이벤트
@@ -507,6 +579,7 @@ namespace SJLee
                 Focus();
             }
         }
+      
         private void ImageViewCtrl_MouseMove(object sender, MouseEventArgs e)
         {
             _mousePos = e.Location;
@@ -903,7 +976,90 @@ namespace SJLee
             _rectInfos.AddRange(rectInfos);
             Invalidate();
         }
+        public void SetInspResultCount(InspectResultCount inspectResultCount)
+        {
+            _inspectResultCount = inspectResultCount;
+        }
 
+        //#13_INSP_RESULT#9 키보드 이벤트 받기 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            _isCtrlPressed = keyData == Keys.Control;
+
+            if (keyData == (Keys.Control | Keys.C))
+            {
+                CopySelectedROIs();
+            }
+            else if (keyData == (Keys.Control | Keys.V))
+            {
+                PasteROIsAt();
+            }
+            else
+            {
+                switch (keyData)
+                {
+                    case Keys.Delete:
+                        {
+                            if (_selEntity != null)
+                            {
+                                DeleteSelEntity();
+                            }
+                        }
+                        break;
+                    case Keys.Enter:
+                        {
+                            InspWindow selWindow = null;
+                            if (_selEntity != null)
+                                selWindow = _selEntity.LinkedWindow;
+
+                            DiagramEntityEvent?.Invoke(this, new DiagramEntityEventArgs(EntityActionType.Inspect, selWindow));
+                        }
+                        break;
+                }
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+        // ─── 복사(Ctrl+C) ----------------------------------------------------------
+        private void CopySelectedROIs() // #ROI COPYPASTE#
+        {
+            _copyBuffer.Clear();
+            for (int i = 0; i < _multiSelectedEntities.Count; i++)
+            {
+                _copyBuffer.Add(_multiSelectedEntities[i]);
+            }
+        }
+
+        // ─── 붙여넣기(Ctrl+V) ------------------------------------------------------
+        private void PasteROIsAt() // #ROI COPYPASTE#
+        {
+            if (_copyBuffer.Count == 0)
+                return;
+
+            // ① 기준점(마우스)을 Virtual 좌표로 변환
+            PointF virtBase = ScreenToVirtual(_mousePos);
+
+            foreach (var entity in _copyBuffer)
+            {
+                int dx = (int)(virtBase.X - entity.EntityROI.Left + 0.5f);
+                int dy = (int)(virtBase.Y - entity.EntityROI.Top + 0.5f);
+                var newRect = entity.EntityROI;
+
+                DiagramEntityEvent?.Invoke(this,
+                    new DiagramEntityEventArgs(EntityActionType.Copy, entity.LinkedWindow,
+                                                entity.LinkedWindow?.InspWindowType ?? InspWindowType.None,
+                                                newRect, new Point(dx, dy)));
+            }
+            Invalidate();
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Control)
+                _isCtrlPressed = false;
+
+            base.OnKeyUp(e);
+        }
         public void ResetEntity()
         {
             _rectInfos.Clear();

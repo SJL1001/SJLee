@@ -49,6 +49,7 @@ namespace SJLee
             SettingXml.Inst.CamType = (CameraType)cbCamera.SelectedIndex;
             //환경설정 저장
             SettingXml.Save();
+            SLogger.Write($"카메라 설정 저장");
         }
         private void btnApplyCam_Click(object sender, EventArgs e)
         {
