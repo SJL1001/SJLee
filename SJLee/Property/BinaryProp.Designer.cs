@@ -30,6 +30,8 @@
         {
             this.chkUse = new System.Windows.Forms.CheckBox();
             this.grpBinary = new System.Windows.Forms.GroupBox();
+            this.lbChannel = new System.Windows.Forms.Label();
+            this.cbChannel = new System.Windows.Forms.ComboBox();
             this.lbHighlight = new System.Windows.Forms.Label();
             this.cbHighlight = new System.Windows.Forms.ComboBox();
             this.binRangeTrackbar = new SJLee.RangeTrackbar();
@@ -52,6 +54,8 @@
             // 
             // grpBinary
             // 
+            this.grpBinary.Controls.Add(this.lbChannel);
+            this.grpBinary.Controls.Add(this.cbChannel);
             this.grpBinary.Controls.Add(this.lbHighlight);
             this.grpBinary.Controls.Add(this.cbHighlight);
             this.grpBinary.Controls.Add(this.binRangeTrackbar);
@@ -61,6 +65,24 @@
             this.grpBinary.TabIndex = 5;
             this.grpBinary.TabStop = false;
             this.grpBinary.Text = "groupBox1";
+            // 
+            // lbChannel
+            // 
+            this.lbChannel.AutoSize = true;
+            this.lbChannel.Location = new System.Drawing.Point(10, 168);
+            this.lbChannel.Name = "lbChannel";
+            this.lbChannel.Size = new System.Drawing.Size(104, 18);
+            this.lbChannel.TabIndex = 4;
+            this.lbChannel.Text = "이미지 채널";
+            // 
+            // cbChannel
+            // 
+            this.cbChannel.FormattingEnabled = true;
+            this.cbChannel.Location = new System.Drawing.Point(121, 168);
+            this.cbChannel.Name = "cbChannel";
+            this.cbChannel.Size = new System.Drawing.Size(121, 26);
+            this.cbChannel.TabIndex = 3;
+            this.cbChannel.SelectedIndexChanged += new System.EventHandler(this.cbChannel_SelectedIndexChanged);
             // 
             // lbHighlight
             // 
@@ -165,5 +187,7 @@
         private System.Windows.Forms.ComboBox cbBinMethod;
         private System.Windows.Forms.DataGridView dataGridViewFilter;
         private System.Windows.Forms.CheckBox chkRotatedRect;
+        private System.Windows.Forms.Label lbChannel;
+        private System.Windows.Forms.ComboBox cbChannel;
     }
 }

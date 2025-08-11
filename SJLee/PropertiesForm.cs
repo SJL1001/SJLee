@@ -75,8 +75,12 @@ namespace SJLee
             {
                 case InspectType.InspBinary:
                     BinaryProp blobProp = new BinaryProp();
+
+                    //#7_BINARY_PREVIEW#8 이진화 속성 변경시 발생하는 이벤트 추가
                     blobProp.RangeChanged += RangeSlider_RangeChanged;
-                    blobProp.PropertyChanged += PropertyChanged;
+
+                    //#18_IMAGE_CHANNEL#13 이미지 채널 변경시 이벤트 추가
+                    blobProp.ImageChannelChanged += ImageChannelChanged;
                     curProp = blobProp;
                     break;
                 //#11_MATCHING#5 패턴매칭 속성창 추가
@@ -158,6 +162,11 @@ namespace SJLee
         private void PropertyChanged(object sender, EventArgs e)
         {
             Global.Inst.InspStage.RedrawMainView();
+        }
+        //#18_IMAGE_CHANNEL#14 이미지 채널 변경시 프리뷰에 이미지 채널 설정
+        private void ImageChannelChanged(object sender, ImageChannelEventArgs e)
+        {
+            Global.Inst.InspStage.SetPreviewImage(e.Channel);
         }
     }
 }

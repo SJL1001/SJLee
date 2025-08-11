@@ -15,11 +15,16 @@ namespace SJLee
 {
     public partial class CameraForm : DockContent
     {
+        //#18_IMAGE_CHANNEL#3 현재 선택된 이미지 채널을 저장하는 변수
+        //_currentImageChannel 변수 모두 찾아서, 관련 코드 수정할것
+        eImageChannel _currentImageChannel = eImageChannel.Gray;
         public CameraForm()
         {
             InitializeComponent();
 
             imageViewCtrlMain.DiagramEntityEvent += imageViewCtrlMain_DiagramEntityEvent;
+            //#18_IMAGE_CHANNEL#1 메인툴바 이벤트 처리
+            mainViewToolbar.ButtonChanged += Toolbar_ButtonChanged;
         }
         private void imageViewCtrlMain_DiagramEntityEvent(object sender, DiagramEntityEventArgs e)
         {
@@ -55,23 +60,27 @@ namespace SJLee
                     break;
             }
         }
+        //#3_CAMERAVIEW_PROPERTY#1 이미지 경로를 받아 PictureBox에 이미지를 로드하는 메서드
         public void LoadImage(string filePath)
         {
             if (File.Exists(filePath) == false)
                 return;
 
+            //#4_IMAGE_VIEWER#6 이미지 뷰어 컨트롤을 사용하여 이미지를 로드
+            //picMainview.Image = Image.FromFile(filePath);
             Image bitmap = Image.FromFile(filePath);
             imageViewCtrlMain.LoadBitmap((Bitmap)bitmap);
+        }
+        public Mat GetDisplayImage()
+        {
+            return Global.Inst.InspStage.ImageSpace.GetMat(0, _currentImageChannel);
+        }
 
-           // Global.Inst.InspStage.GetCurrentImage();
-
-        }            
-  
 
         private void CameraForm_Resize(object sender, EventArgs e)
         {
             int margin = 0;
-            imageViewCtrlMain.Width = this.Width - margin * 2;
+            imageViewCtrlMain.Width = this.Width - mainViewToolbar.Width - margin * 2;
             imageViewCtrlMain.Height = this.Height - margin * 2;
 
             imageViewCtrlMain.Location = new System.Drawing.Point(margin, margin);
@@ -80,26 +89,22 @@ namespace SJLee
         public void UpdateDisplay(Bitmap bitmap = null)
         {
             if (bitmap == null)
-            {                
-                bitmap = Global.Inst.InspStage.GetBitmap(0);
+            {
+                //#6_INSP_STAGE#3 업데이트시 bitmap이 없다면 InspSpace에서 가져온다
+                bitmap = Global.Inst.InspStage.GetBitmap(0, _currentImageChannel);
                 if (bitmap == null)
                     return;
             }
+
             if (imageViewCtrlMain != null)
                 imageViewCtrlMain.LoadBitmap(bitmap);
-
-            Mat curImage = Global.Inst.InspStage.GetMat();
-            Global.Inst.InspStage.PreView.SetImage(curImage);
         }
 
-        public Mat GetDisplayImage()
-        {
-            return Global.Inst.InspStage.ImageSpace.GetMat();
-        }
+       
         public void UpdateImageViewer()
         {
             imageViewCtrlMain.UpdateInspParam();
-            imageViewCtrlMain   .Invalidate();
+            imageViewCtrlMain.Invalidate();
         }
         public void UpdateDiagramEntity()
         {
@@ -153,6 +158,74 @@ namespace SJLee
         public void SetInspResultCount(int totalArea, int okCnt, int ngCnt)
         {
             imageViewCtrlMain.SetInspResultCount(new InspectResultCount(totalArea, okCnt, ngCnt));
+        }
+        //#17_WORKING_STATE#5 작업 상태 화면 표시 설정
+        public void SetWorkingState(WorkingState workingState)
+        {
+            string state = "";
+            switch (workingState)
+            {
+                case WorkingState.INSPECT:
+                    state = "INSPECT";
+                    break;
+
+                case WorkingState.LIVE:
+                    state = "LIVE";
+                    break;
+
+                case WorkingState.ALARM:
+                    state = "ALARM";
+                    break;
+            }
+
+            imageViewCtrlMain.WorkingState = state;
+            imageViewCtrlMain.Invalidate();
+        }
+        //#18_IMAGE_CHANNEL#2 메인툴바의 버튼 이벤트를 처리하는 함수
+        private void Toolbar_ButtonChanged(object sender, ToolbarEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case ToolbarButton.ShowROI:
+                    if (e.IsChecked)
+                        UpdateDiagramEntity();
+                    else
+                        imageViewCtrlMain.ResetEntity();
+                    break;
+                case ToolbarButton.ChannelColor:
+                    _currentImageChannel = eImageChannel.Color;
+                    UpdateDisplay();
+                    break;
+                case ToolbarButton.ChannelGray:
+                    _currentImageChannel = eImageChannel.Gray;
+                    UpdateDisplay();
+                    break;
+                case ToolbarButton.ChannelRed:
+                    _currentImageChannel = eImageChannel.Red;
+                    UpdateDisplay();
+                    break;
+                case ToolbarButton.ChannelGreen:
+                    _currentImageChannel = eImageChannel.Green;
+                    UpdateDisplay();
+                    break;
+                case ToolbarButton.ChannelBlue:
+                    _currentImageChannel = eImageChannel.Blue;
+                    UpdateDisplay();
+                    break;
+            }
+        }
+        public void SetImageChannel(eImageChannel channel)
+        {
+            mainViewToolbar.SetSelectButton(channel);
+            UpdateDisplay();
+        }
+        private void CameraForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            mainViewToolbar.ButtonChanged -= Toolbar_ButtonChanged;
+
+            imageViewCtrlMain.DiagramEntityEvent -= imageViewCtrlMain_DiagramEntityEvent;
+
+            this.FormClosed -= CameraForm_FormClosed;
         }
     }
 

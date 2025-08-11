@@ -28,6 +28,8 @@ namespace SJLee
             LoadDockingWindows();
 
             Global.Inst.Initialize();
+            //#15_INSP_WORKER#2 연속 검사 모드 설정값 로딩
+            LoadSetting();
         }
         private void LoadDockingWindows()
         {
@@ -53,6 +55,11 @@ namespace SJLee
             var logWindow = new LogForm();
             logWindow.Show(propWindow.Pane, DockAlignment.Bottom, 0.3);
         }
+        private void LoadSetting()
+        {
+            cycleModeMenuItem.Checked = SettingXml.Inst.CycleMode;
+        }
+    
         public static T GetDockForm<T>() where T : DockContent
         {
             var findForm = _dockPanel.Contents.OfType<T>().FirstOrDefault();
@@ -79,7 +86,7 @@ namespace SJLee
                 }
             }            
            
-        }
+        }   
 
         
         private void imageSaveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -183,7 +190,19 @@ namespace SJLee
                     Global.Inst.InspStage.SaveModel(filePath);
                 }
             }
-        }   
+        }
+        //#15_INSP_WORKER#3 Cycle 모드 설정
+        private void cycleModeMenuItem_Click(object sender, EventArgs e)
+        {
+            // 현재 체크 상태 확인
+            bool isChecked = cycleModeMenuItem.Checked;
+            SettingXml.Inst.CycleMode = isChecked;
+        }
+
+        private void inspectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

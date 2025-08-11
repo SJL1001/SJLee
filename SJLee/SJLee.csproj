@@ -53,15 +53,20 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
+    <Reference Include="log4net, Version=2.0.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SJLEE2\ExternalLib\Dll\Log4Net\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MessagingLibrary">
+      <HintPath>..\..\..\SJLEE2\ExternalLib\Dll\MessagingLibrary\MessagingLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MvCameraControl.Net, Version=4.5.0.2, Culture=neutral, PublicKeyToken=a3c7c5e3a730cd12, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ExternalLib\Dll\HikRobot\MvCameraControl.Net.dll</HintPath>
     </Reference>
-    <Reference Include="ObjectListView">
+    <Reference Include="ObjectListView, Version=2.9.1.1072, Culture=neutral, PublicKeyToken=b1c5bf581481bcd4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\SJLEE2\ExternalLib\Dll\ObjectListView\ObjectListView.dll</HintPath>
     </Reference>
     <Reference Include="OpenCvSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
@@ -82,6 +87,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -101,15 +107,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm\BlobAlgorithm.cs" />
+    <Compile Include="Communicator.cs" />
+    <Compile Include="CommunicatorSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommunicatorSetting.Designer.cs">
+      <DependentUpon>CommunicatorSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Core\Define.cs" />
     <Compile Include="Algorithm\DrawInspectInfo.cs" />
     <Compile Include="Algorithm\MatchAlgorithm.cs" />
+    <Compile Include="ImageFileSorter.cs" />
+    <Compile Include="ImageLoader.cs" />
+    <Compile Include="InspBoard.cs" />
     <Compile Include="Inspect\InspResult.cs" />
+    <Compile Include="InspWorker.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="LogForm.Designer.cs">
       <DependentUpon>LogForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainViewToolbar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MainViewToolbar.Designer.cs">
+      <DependentUpon>MainViewToolbar.cs</DependentUpon>
     </Compile>
     <Compile Include="NewModel.cs">
       <SubType>Form</SubType>
@@ -233,8 +256,15 @@
     <Compile Include="Inspect\SaigeAI.cs" />
     <Compile Include="Grab\WebCam.cs" />
     <Compile Include="Util\XmlHelper.cs" />
+    <Compile Include="VisionSequence.cs" />
+    <EmbeddedResource Include="CommunicatorSetting.resx">
+      <DependentUpon>CommunicatorSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainViewToolbar.resx">
+      <DependentUpon>MainViewToolbar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewModel.resx">
       <DependentUpon>NewModel.cs</DependentUpon>
