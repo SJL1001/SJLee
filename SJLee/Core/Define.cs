@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace SJLee
 {
+    public enum InspectType
+    {
+        InspNone = -1,
+        InspBinary,
+        InspFilter,
+        InspAIModule,
+        InspCount,
+        InspMatch,
+        
+    }
     public enum InspWindowType
     {
         None = 0,
@@ -23,16 +33,7 @@ namespace SJLee
         Error,          //오류
         Timeout         //타임아웃
     }
-    public enum InspectType
-    {
-        InspNone = -1,
-        InspBinary,
-        InspFilter,
-        InspAIModule,
-        InspCount,
-        InspMatch,
-        ID
-    }
+    
 
     public enum WorkingState
     {

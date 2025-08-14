@@ -57,8 +57,8 @@ namespace SJLee
             _imageListThumb.Images.Clear();
             listThumbnail.Items.Clear();
             _isImg = null;
-            _editIndex = -1;
-            _inspWindow = null;
+           // _editIndex = -1;
+           // _inspWindow = null;
             _curAlgoIndex = -1;
         }
 
@@ -138,7 +138,13 @@ namespace SJLee
         {
             int nSelItem = GetSelectedIndex();
             if (nSelItem < 0)
-                return;
+            {
+                //1개 이하 일때 기본값 사용
+                if (listThumbnail.Items.Count == 1)
+                    nSelItem = 0;
+                else
+                    return;
+            }
 
             OnSelectChannel(PatternImageButton.UpdateImage, nSelItem);
         }
@@ -150,6 +156,9 @@ namespace SJLee
 
         private void Del_Click(object sender, EventArgs e)
         {
+            //1개 이하 일때 리턴
+            if (listThumbnail.Items.Count <= 1)
+                return;
             int nSelItem = GetSelectedIndex();
             if (nSelItem < 0)
                 return;

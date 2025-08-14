@@ -401,89 +401,7 @@ namespace SJLee
         //#10_INSPWINDOW#12 inspWindow에 대한 검사구현
         public void TryInspection(InspWindow inspWindow = null)
         {
-            /*
-            if (inspWindow is null)
-            {
-                if (_selectedInspWindow is null)
-                    return;
-
-                inspWindow = _selectedInspWindow;
-            }
-
-            UpdateDiagramEntity();
-
-            inspWindow.ResetInspResult();
-
-            List<DrawInspectInfo> totalArea = new List<DrawInspectInfo>();
-
-            Rect windowArea = inspWindow.WindowArea;
-
-            foreach (var inspAlgo in inspWindow.AlgorithmList)
-            {
-                if (!inspAlgo.IsUse)
-                    continue;
-                //검사 영역 초기화
-                inspAlgo.TeachRect = windowArea;
-                inspAlgo.InspRect = windowArea;
-                Mat srcImage = Global.Inst.InspStage.GetMat();
-                inspAlgo.SetInspData(srcImage);
-
-                if (!inspAlgo.DoInspect())
-                    continue;
-
-                List<DrawInspectInfo> resultArea = new List<DrawInspectInfo>();
-                int resultCnt = inspAlgo.GetResultRect(out resultArea);
-                if (resultCnt > 0)
-                {
-                    totalArea.AddRange(resultArea);
-                }
-
-                InspectType inspType = inspAlgo.InspectType;
-                string resultInfo = string.Join("\r\n", inspAlgo.ResultString);
-
-                InspResult inspResult = new InspResult
-                {
-                    ObjectID = inspWindow.UID,
-                    InspType = inspAlgo.InspectType,
-                    IsDefect = inspAlgo.IsDefect,
-                    ResultInfos = resultInfo
-                };
-                switch (inspType)
-                {
-                    case InspectType.InspMatch:
-                        {
-                            MatchAlgorithm matchAlgo = inspAlgo as MatchAlgorithm;
-                            inspResult.ResultValue = $"{matchAlgo.OutScore}";
-                            break;
-                        }
-                    case InspectType.InspBinary:
-                        {
-                            BlobAlgorithm blobAlgo = (BlobAlgorithm)inspAlgo;
-                            int min = blobAlgo.BlobFilters[blobAlgo.FILTER_COUNT].min;
-                            int max = blobAlgo.BlobFilters[blobAlgo.FILTER_COUNT].max;
-                            inspResult.ResultValue = $"{blobAlgo.OutBlobCount}/{min}~{max}";
-                            break;
-                        }
-                }
-
-                inspWindow.AddInspResult(inspResult);
-            }
-
-            if (totalArea.Count > 0)
-            {
-                //찾은 위치를 이미지상에서 표시
-                var cameraForm = MainForm.GetDockForm<CameraForm>();
-                if (cameraForm != null)
-                {
-                    cameraForm.AddRect(totalArea);
-                }
-            }
-
-            ResultForm resultForm = MainForm.GetDockForm<ResultForm>();
-            if (resultForm != null)
-            {
-                resultForm.AddWindowResult(inspWindow);
-            }*/
+          
             UpdateDiagramEntity();
             InspWorker.TryInspect(inspWindow, InspectType.InspNone);
         }
@@ -640,19 +558,7 @@ namespace SJLee
                 _grabManager.Grab(bufferIndex, true);  // 다음 촬영 시작
             }
         }
-        public void StartLive()
-        {
-            if (_camType == CameraType.None)
-                return;
-            LiveMode = true;
-            Grab(0);   // 첫 Grab 시작
-        }
-
-        public void StopLive()
-        {
-            LiveMode = false;
-            // 필요하다면 현재 Grab 중단 등 추가
-        }
+    
         private void DisplayGrabImage(int bufferIndex)
         {
             var cameraForm = MainForm.GetDockForm<CameraForm>();

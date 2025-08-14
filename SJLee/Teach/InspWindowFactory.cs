@@ -96,6 +96,10 @@ namespace SJLee
                     name = "Sub";
                     prefix = "SUB";
                     break;
+                case InspWindowType.ID:
+                    name = "ID";
+                    prefix = "ID";
+                    break;
                 default:
                     return false;
             }
